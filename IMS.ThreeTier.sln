@@ -1,11 +1,12 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.37203.1 d17.14
+VisualStudioVersion = 17.14.37203.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMS.UI", "IMS.ThreeTier\IMS.UI.csproj", "{FAFE5D1C-3097-4B7C-887D-4EF4623ED5A9}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4AEAA6F8-4318-404D-BED8-C5647546E3CD} = {4AEAA6F8-4318-404D-BED8-C5647546E3CD}
+		{FA1DEBF1-A04E-49EC-8FBC-AE5A888D57A5} = {FA1DEBF1-A04E-49EC-8FBC-AE5A888D57A5}
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IMS.BIL", "IMS.BIL\IMS.BIL.csproj", "{4AEAA6F8-4318-404D-BED8-C5647546E3CD}"
