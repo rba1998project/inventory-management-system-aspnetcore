@@ -14,6 +14,22 @@ namespace IMS.DAL.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            //seed two default role.
+            modelBuilder.Entity<IdentityRole>().HasData(
+                new IdentityRole
+                {
+                    Id = "1",
+                    Name = "Admin",
+                    NormalizedName = "ADMIN"
+                },
+                new IdentityRole
+                {
+                    Id = "2",
+                    Name = "InventoryManager",
+                    NormalizedName = "INVENTORYMANAGER"
+                }
+            );
         }
     }
 }

@@ -1,6 +1,6 @@
 # IMS.ThreeTier
 
-🗄️ Database Setup
+## Database Setup
 
 This project uses Entity Framework Core (Code-First approach).
 The database is not included and will be created locally using migrations.
@@ -25,3 +25,9 @@ This repository already includes EF Core migration files, so you do NOT need to 
 Run only:
 
 dotnet ef database update
+
+
+## Demo Admin Login
+
+Email: admin@demo.com
+Password: Admin123!

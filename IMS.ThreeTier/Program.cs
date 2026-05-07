@@ -19,5 +19,12 @@ builder.Services
 
 var app = builder.Build();
 
+// Seed default admin for demo purposes (not for production)
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    await IdentitySeeder.SeedAdminUserAsync(services);
+}
 
 app.Run();
