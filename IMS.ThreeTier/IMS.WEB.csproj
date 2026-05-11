@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\IMS.DAL\IMS.DAL.csproj" />
+    <ProjectReference Include="..\IMS.BIL\IMS.BLL.csproj" />
   </ItemGroup>
 
 </Project>
