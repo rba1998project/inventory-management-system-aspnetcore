@@ -1,0 +1,133 @@
+﻿@model List<IMS.Models.ApplicationUser>
+
+<h2>User Management</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">
+    Create User
+</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Email</td>
+
+                <td>
+                    <form asp-action="ChangeRole" method="post" class="d-flex gap-2">
+                        <input type="hidden" name="userId" value="@user.Id" />
+
+                        <select name="role" class="form-control w-80">
+                            @foreach (var role in ViewBag.Roles as List<string>)
+                            {
+                                var currentRole =
+                                ((Dictionary<string, string>)ViewBag.UserRoles)[user.Id];
+
+                                if (role == currentRole)
+                                {
+                                    <option value="@role" selected>@role</option>
+                                }
+                                else
+                                {
+                                    <option value="@role">@role</option>
+                                }
+                            }
+                        </select>
+
+                        <button type="submit" class="btn btn-success w-20">
+                            Update
+                        </button>
+                    </form>
+                </td>
+
+                <td>
+                    <button type="button" class="btn btn-danger w-100" onclick="openDeleteModal('@user.Id')">
+                        Delete
+                    </button>
+
+                    <form id="deleteForm" asp-action="Delete" method="post">
+                        <input type="hidden" name="userId" id="deleteUserId" />
+                    </form>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal fade" id="successModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Success</h5>
+            </div>
+            <div class="modal-body">
+                @TempData["SuccessMessage"]
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" data-bs-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*used tempdata to show a role confirmed modal*@
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var modal = new bootstrap.Modal(document.getElementById('successModal'));
+            modal.show();
+        });
+    </script>
+}
+
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+            </div>
+
+            <div class="modal-body">
+                Are you sure you want to delete this user?
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button class="btn btn-danger" onclick="submitDelete()">
+                    Delete
+                </button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    let selectedUserId = null;
+
+    function openDeleteModal(userId) {
+        selectedUserId = userId;
+        var modal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        modal.show();
+    }
+
+    function submitDelete() {
+        document.getElementById("deleteUserId").value = selectedUserId;
+        document.getElementById("deleteForm").submit();
+    }
+</script>
