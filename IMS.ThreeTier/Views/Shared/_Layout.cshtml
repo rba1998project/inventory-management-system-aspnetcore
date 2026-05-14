@@ -107,8 +107,14 @@
         </div>
     </footer>
 
+    @* Global feedback modal (used by showModal in site.js) *@
+    <partial name="_MessageModal" />
+
     <script src="~/lib/jquery/jquery.min.js"></script>
     <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    @*added to load custom JavaScript exclusively for site help*@ 
+    <script src="~/js/site.js"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
 
