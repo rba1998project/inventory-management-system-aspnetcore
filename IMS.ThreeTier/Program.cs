@@ -1,6 +1,8 @@
 using IMS.BLL.Interfaces;
 using IMS.BLL.Services;
 using IMS.DAL.Context;
+using IMS.DAL.Interfaces;
+using IMS.DAL.Repositories;
 using IMS.DAL.Seeders;
 using IMS.Models;
 using Microsoft.AspNetCore.Identity;
@@ -36,6 +38,8 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 
 var app = builder.Build();
