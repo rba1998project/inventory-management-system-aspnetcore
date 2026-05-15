@@ -1,0 +1,364 @@
+﻿@using IMS.WEB.ViewModels
+@model SupplierListViewModel
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h3>Supplier List</h3>
+
+    <button class="btn btn-primary"
+            id="btnCreateSupplier">
+        + Create Supplier
+    </button>
+
+</div>
+
+<form method="get" class="mb-3 d-flex gap-2">
+
+    <input type="text"
+           name="search"
+           value="@Model.Search"
+           class="form-control"
+           placeholder="Search suppliers..." />
+
+    <button class="btn btn-primary">Search</button>
+
+    <a href="/Supplier/Index" class="btn btn-secondary">Reset</a>
+
+</form>
+
+<table class="table table-bordered" id="supplierTable">
+
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Contact Person</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Products</th>
+
+            @if (User.IsInRole("Admin"))
+            {
+                <th>Created At</th>
+                <th>Created By</th>
+                <th>Last Updated</th>
+                <th>Updated By</th>
+            }
+
+            <th>Actions</th>
+        </tr>
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model.Suppliers)
+        {
+            <tr data-id="@item.Id">
+
+                <td contenteditable="true">@item.Name</td>
+                <td contenteditable="true">@item.ContactPerson</td>
+                <td contenteditable="true">@item.Email</td>
+                <td contenteditable="true">@item.Phone</td>
+                <td contenteditable="true">@item.Address</td>
+
+                <td>
+                    @if (item.ProductCount > 0)
+                    {
+                        <a href="#"
+                           class="productCountLink text-primary"
+                           data-id="@item.Id">
+                            @item.ProductCount
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">0</span>
+                    }
+                </td>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>@item.CreatedAt</td>
+                    <td>@item.CreatedBy</td>
+                    <td>@item.LastModifiedAt</td>
+                    <td>@item.LastModifiedBy</td>
+                }
+
+                <td>
+                    <div class="d-flex gap-2 w-100">
+
+                        <button class="btn btn-success btn-sm flex-fill saveBtn">
+                            Update
+                        </button>
+
+                        <button class="btn btn-danger btn-sm flex-fill deleteBtn">
+                            Delete
+                        </button>
+
+                    </div>
+                </td>
+
+            </tr>
+        }
+
+    </tbody>
+
+</table>
+
+<nav>
+    <ul class="pagination">
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.Page ? "active" : "")">
+
+                <a class="page-link"
+                   href="/Supplier/Index?page=@i&pageSize=@Model.PageSize&search=@Model.Search">
+                    @i
+                </a>
+
+            </li>
+        }
+
+    </ul>
+</nav>
+
+<div class="modal fade" id="createSupplierModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" id="createSupplierContent">
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteSupplierModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title text-danger">
+                    Confirm Delete
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p>
+                    Are you sure you want to delete
+                    <strong id="deleteSupplierName"></strong>?
+                </p>
+
+                <p class="text-danger">
+                    Deleting this supplier will also permanently delete all associated products.
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button class="btn btn-danger"
+                        id="confirmDeleteBtn">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="productListModal" tabindex="-1">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    Products of Supplier
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body" id="productListContent">
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        $(document).on("input", "td[contenteditable=true]", function () {
+            $(this).closest("tr").addClass("table-warning");
+        });
+
+        $(".saveBtn").click(function () {
+
+            var row = $(this).closest("tr");
+
+            var data = {
+                Id: row.data("id"),
+                Name: row.find("td:eq(0)").text(),
+                ContactPerson: row.find("td:eq(1)").text(),
+                Email: row.find("td:eq(2)").text(),
+                Phone: row.find("td:eq(3)").text(),
+                Address: row.find("td:eq(4)").text()
+            };
+
+            $.post("/Supplier/Edit", data, function (res) {
+
+                if (res.success) {
+
+                    row.removeClass("table-warning");
+
+                    showModal("Success", "Supplier updated successfully");
+
+                } else {
+
+                    showModal("Error", "Update failed");
+                }
+            });
+        });
+
+        let deleteId = 0;
+        let deleteRow = null;
+
+        $(".deleteBtn").click(function () {
+
+            deleteRow = $(this).closest("tr");
+
+            deleteId = deleteRow.data("id");
+
+            let supplierName = deleteRow.find("td:eq(0)").text();
+
+            $("#deleteSupplierName").text(supplierName);
+
+            var modal = new bootstrap.Modal(
+                document.getElementById('deleteSupplierModal')
+            );
+
+            modal.show();
+        });
+
+        $("#confirmDeleteBtn").click(function () {
+
+            $.post("/Supplier/Delete", { id: deleteId }, function (res) {
+
+                $("#deleteSupplierModal").modal("hide");
+
+                if (res.success) {
+
+                    showModal("Success", "Supplier deleted successfully");
+
+                    deleteRow.remove();
+
+                } else {
+
+                    showModal("Error", "Delete failed");
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+
+        $("#btnCreateSupplier").click(function () {
+
+            $.get("/Supplier/Create", function (data) {
+
+                $("#createSupplierContent").html(data);
+
+                var modal = new bootstrap.Modal(
+                    document.getElementById('createSupplierModal')
+                );
+
+                modal.show();
+            });
+        });
+
+        $(document).on("submit", "#createSupplierForm", function (e) {
+
+            e.preventDefault();
+
+            $.ajax({
+
+                url: "/Supplier/Create",
+                type: "POST",
+                data: $(this).serialize(),
+
+                success: function () {
+
+                    $("#createSupplierModal").modal("hide");
+
+                    showModal(
+                        "Success",
+                        "Supplier created successfully"
+                    );
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                },
+
+                error: function () {
+
+                    showModal(
+                        "Error",
+                        "Failed to create supplier"
+                    );
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+
+        $(document).on("click", ".productCountLink", function (e) {
+
+            e.preventDefault();
+
+            var supplierId = $(this).data("id");
+
+            $.get("/Supplier/GetProducts", { id: supplierId }, function (data) {
+
+                $("#productListContent").html(data);
+
+                var modal = new bootstrap.Modal(
+                    document.getElementById('productListModal')
+                );
+
+                modal.show();
+            });
+        });
+
+    </script>
+
+}
