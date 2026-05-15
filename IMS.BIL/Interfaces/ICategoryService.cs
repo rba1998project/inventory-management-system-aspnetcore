@@ -4,6 +4,7 @@ namespace IMS.BLL.Interfaces
 {
     public interface ICategoryService
     {
+        Task<PagedResult<CategoryDto>> GetPagedAsync(int page, int pageSize, string search);
         Task<List<CategoryDto>> GetAllAsync();
         Task<CategoryDto> GetByIdAsync(int id);
         Task CreateAsync(CategoryDto dto, string user);

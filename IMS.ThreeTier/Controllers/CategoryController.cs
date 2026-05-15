@@ -7,6 +7,7 @@ namespace IMS.WEB.Controllers
     using IMS.WEB.ViewModels;
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
+    using static System.Runtime.InteropServices.JavaScript.JSType;
 
     [Authorize]
     public class CategoryController : Controller
@@ -20,21 +21,44 @@ namespace IMS.WEB.Controllers
 
         //TODO: Implement pagination and search functionality
         [Authorize(Roles = "Admin,InventoryManager")]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 5, string search = "")
         {
-            var data = await _service.GetAllAsync();
+            //commented and added for pagination and search functionality
+            //var data = await _service.GetAllAsync();
 
-            var vm = data.Select(x => new CategoryViewModel
+            //var vm = data.Select(x => new CategoryViewModel
+            //{
+            //    Id = x.Id,
+            //    Name = x.Name,
+            //    Description = x.Description,
+            //    ProductCount = x.ProductCount,
+            //    CreatedAt = x.CreatedAt,
+            //    CreatedBy = x.CreatedBy,
+            //    LastModifiedAt = x.LastModifiedAt,
+            //    LastModifiedBy = x.LastModifiedBy
+            //}).ToList();
+
+            var result = await _service.GetPagedAsync(page, pageSize, search);
+
+            var vm = new CategoryListViewModel
             {
-                Id = x.Id,
-                Name = x.Name,
-                Description = x.Description,
-                ProductCount = x.ProductCount,
-                CreatedAt = x.CreatedAt,
-                CreatedBy = x.CreatedBy,
-                LastModifiedAt = x.LastModifiedAt,
-                LastModifiedBy = x.LastModifiedBy
-            }).ToList();
+                Categories = result.Items.Select(x => new CategoryViewModel
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Description = x.Description,
+                    ProductCount = x.ProductCount,
+                    CreatedAt = x.CreatedAt,
+                    CreatedBy = x.CreatedBy,
+                    LastModifiedAt = x.LastModifiedAt,
+                    LastModifiedBy = x.LastModifiedBy
+                }).ToList(),
+
+                Page = result.Page,
+                PageSize = result.PageSize,
+                TotalPages = result.TotalPages,
+                Search = search
+            };
 
             return View(vm);
         }

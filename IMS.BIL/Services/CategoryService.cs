@@ -14,6 +14,30 @@ namespace IMS.BLL.Services
             _repo = repo;
         }
 
+        public async Task<PagedResult<CategoryDto>> GetPagedAsync(int page, int pageSize, string search)
+        {
+            var (items, totalCount) = await _repo.GetPagedAsync(page, pageSize, search);
+
+            return new PagedResult<CategoryDto>
+            {
+                Items = items.Select(c => new CategoryDto
+                {
+                    Id = c.Id,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ProductCount = c.Products?.Count ?? 0,
+                    CreatedAt = c.CreatedAt,
+                    CreatedBy = c.CreatedBy,
+                    LastModifiedAt = c.LastModifiedAt,
+                    LastModifiedBy = c.LastModifiedBy
+                }).ToList(),
+
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize
+            };
+        }
+
         public async Task<List<CategoryDto>> GetAllAsync()
         {
             var data = await _repo.GetAllAsync();

@@ -14,6 +14,28 @@ namespace IMS.DAL.Repositories
             _context = context;
         }
 
+        public async Task<(List<Category> Items, int TotalCount)> GetPagedAsync(int page, int pageSize, string search)
+        {
+            var query = _context.Categories
+                .Where(c => !c.IsDeleted);
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(c => c.Name.Contains(search));
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Include(c => c.Products)
+                .OrderByDescending(c => c.Id)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
+
         public async Task<List<Category>> GetAllAsync()
         {
             return await _context.Categories
@@ -22,6 +44,8 @@ namespace IMS.DAL.Repositories
                 .ToListAsync();
         }
 
+
+
         public async Task<Category?> GetByIdAsync(int id)
         {
             return await _context.Categories
@@ -29,22 +53,7 @@ namespace IMS.DAL.Repositories
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<List<Category>> GetPagedAsync(int page, int pageSize, string search)
-        {
-            var query = _context.Categories
-                .Where(c => !c.IsDeleted);
-
-            if (!string.IsNullOrEmpty(search))
-            {
-                query = query.Where(c => c.Name.Contains(search));
-            }
-
-            return await query
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .Include(c => c.Products)
-                .ToListAsync();
-        }
+       
 
         public async Task AddAsync(Category category)
         {
@@ -57,14 +66,6 @@ namespace IMS.DAL.Repositories
             _context.Categories.Update(category);
             await _context.SaveChangesAsync();
         }
-
-        //hard delete
-        //public async Task DeleteAsync(int id)
-        //{
-        //    var category = await _context.Categories.FindAsync(id);
-        //    _context.Categories.Remove(category);
-        //    await _context.SaveChangesAsync();
-        //}
 
         public async Task DeleteAsync(int id, string user)
         {

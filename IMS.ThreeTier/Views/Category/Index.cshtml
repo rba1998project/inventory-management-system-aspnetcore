@@ -1,5 +1,7 @@
 ﻿@using IMS.WEB.ViewModels
-@model IEnumerable<CategoryViewModel>
+@*commented and added for search and pagination functionality*@ 
+@*@model IEnumerable<CategoryViewModel>*@
+@model CategoryListViewModel
 
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -12,6 +14,24 @@
     </button>
 
 </div>
+
+<form method="get" class="mb-3 d-flex gap-2">
+
+    <input type="text"
+           name="search"
+           value="@Model.Search"
+           class="form-control"
+           placeholder="Search categories..." />
+
+    <button type="submit" class="btn btn-primary">
+        Search
+    </button>
+
+    <a href="/Category/Index" class="btn btn-secondary">
+        Reset
+    </a>
+
+</form>
 
 <table class="table table-bordered" id="categoryTable">
     <thead>
@@ -39,7 +59,9 @@
     </thead>
 
     <tbody>
-        @foreach (var item in Model)
+        @*commented and added for search and pagination functionality*@
+        @*@foreach (var item in Model)*@
+        @foreach (var item in Model.Categories)
         {
             <tr data-id="@item.Id">
                 <td contenteditable="true">@item.Name</td>
@@ -81,6 +103,24 @@
         }
     </tbody>
 </table>
+
+<nav>
+    <ul class="pagination">
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.Page ? "active" : "")">
+
+                <a class="page-link"
+                   href="/Category/Index?page=@i&pageSize=@Model.PageSize&search=@Model.Search">
+                    @i
+                </a>
+
+            </li>
+        }
+
+    </ul>
+</nav>
 
 <div class="modal fade" id="createCategoryModal" tabindex="-1">
     <div class="modal-dialog">
