@@ -79,6 +79,7 @@ DIRTY ROW
 ========================= */
 .table-responsive {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* =========================
@@ -87,4 +88,25 @@ DIRTY ROW
 .audit-cell {
     font-size: 0.85rem;
     color: #666;
+}
+
+/* =========================
+   RESPONSIVE ACTION BUTTONS
+========================= */
+
+@media (max-width: 1400px) {
+
+    .actions-cell {
+        min-width: auto;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 4px;
+    }
+
+    .action-buttons .btn {
+        width: 100%;
+    }
 }

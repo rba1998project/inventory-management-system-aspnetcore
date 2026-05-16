@@ -1,15 +1,10 @@
-﻿@using IMS.WEB.ViewModels
-@*commented and added for search and pagination functionality*@ 
-@*@model IEnumerable<CategoryViewModel>*@
-@model CategoryListViewModel
-
+﻿@model IMS.WEB.ViewModels.CategoryListViewModel
 
 <div class="d-flex justify-content-between align-items-center mb-3">
 
     <h3>Category List</h3>
 
-    <button class="btn btn-primary"
-            id="btnCreateCategory">
+    <button class="btn btn-primary" id="btnCreateCategory">
         + Create Category
     </button>
 
@@ -33,76 +28,91 @@
 
 </form>
 
-<table class="table table-bordered" id="categoryTable">
-    <thead>
-        <tr>
-            <th>
-                Name
-                <i class="bi bi-pencil-square text-muted ms-1"></i>
-            </th>
+<div class="table-responsive">
 
-            <th>
-                Description
-                <i class="bi bi-pencil-square text-muted ms-1"></i>
-            </th>
-            <th>Products</th>
+    <table class="table table-bordered table-edit-grid" id="categoryTable">
 
-            @if (User.IsInRole("Admin"))
-            {
-                <th>Created At</th>
-                <th>Created By</th>
-                <th>Last Updated</th>
-                <th>Updated By</th>
-            }
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-        @*commented and added for search and pagination functionality*@
-        @*@foreach (var item in Model)*@
-        @foreach (var item in Model.Categories)
-        {
-            <tr data-id="@item.Id">
-                <td contenteditable="true">@item.Name</td>
-                <td contenteditable="true">@item.Description</td>
-                <td>
-                    @if (item.ProductCount > 0)
-                    {
-                        <a href="#"
-                           class="productCountLink text-primary"
-                           data-id="@item.Id">
-                            @item.ProductCount
-                        </a>
-                    }
-                    else
-                    {
-                        <span class="text-muted">0</span>
-                    }
-                </td>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Products</th>
 
                 @if (User.IsInRole("Admin"))
                 {
-                    <td>@item.CreatedAt</td>
-                    <td>@item.CreatedBy</td>
-                    <td>@item.LastModifiedAt</td>
-                    <td>@item.LastModifiedBy</td>
+                    <th>Created At</th>
+                    <th>Created By</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
                 }
-                <td>
-                    <div class="d-flex gap-2 w-100">
-                        <button class="btn btn-success btn-sm flex-fill saveBtn">
-                            Update
-                        </button>
 
-                        <button class="btn btn-danger btn-sm flex-fill deleteBtn">
-                            Delete
-                        </button>
-                    </div>
-                </td>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.Categories)
+            {
+                <tr data-id="@item.Id">
+
+                    <td class="editable-cell" contenteditable="true">
+                        @item.Name
+                    </td>
+
+                    <td class="editable-cell" contenteditable="true">
+                        @item.Description
+                    </td>
+
+                    <td>
+                        @if (item.ProductCount > 0)
+                        {
+                            <a href="#"
+                               class="productCountLink text-primary"
+                               data-id="@item.Id">
+                                @item.ProductCount
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">0</span>
+                        }
+                    </td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td class="audit-cell">@item.CreatedAt</td>
+                        <td class="audit-cell">@item.CreatedBy</td>
+                        <td class="audit-cell">@item.LastModifiedAt</td>
+                        <td class="audit-cell">@item.LastModifiedBy</td>
+                    }
+
+                    <td class="actions-cell">
+
+                        <div class="action-buttons">
+
+                            <button type="button"
+                                    class="btn btn-success btn-sm saveBtn">
+                                Update
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-danger btn-sm deleteBtn">
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
 
 <nav>
     <ul class="pagination">
@@ -123,17 +133,24 @@
 </nav>
 
 <div class="modal fade" id="createCategoryModal" tabindex="-1">
+
     <div class="modal-dialog">
+
         <div class="modal-content" id="createCategoryContent">
         </div>
+
     </div>
+
 </div>
 
 <div class="modal fade" id="deleteCategoryModal" tabindex="-1">
+
     <div class="modal-dialog modal-dialog-centered">
+
         <div class="modal-content">
 
             <div class="modal-header">
+
                 <h5 class="modal-title text-danger">
                     Confirm Delete
                 </h5>
@@ -142,20 +159,24 @@
                         class="btn-close"
                         data-bs-dismiss="modal">
                 </button>
+
             </div>
 
             <div class="modal-body">
+
                 <p>
                     Are you sure you want to delete
                     <strong id="deleteCategoryName"></strong>?
                 </p>
 
                 <p class="text-danger">
-                    Deleting this category will also permanently delete all associated products.
+                    Deleting this category will also delete all related products.
                 </p>
+
             </div>
 
             <div class="modal-footer">
+
                 <button class="btn btn-secondary"
                         data-bs-dismiss="modal">
                     Cancel
@@ -165,37 +186,51 @@
                         id="confirmDeleteBtn">
                     Delete
                 </button>
+
             </div>
 
         </div>
+
     </div>
+
 </div>
 
 <div class="modal fade" id="productListModal" tabindex="-1">
+
     <div class="modal-dialog modal-lg">
+
         <div class="modal-content">
 
             <div class="modal-header">
+
                 <h5 class="modal-title">Products in Category</h5>
 
                 <button type="button"
                         class="btn-close"
                         data-bs-dismiss="modal">
                 </button>
+
             </div>
 
             <div class="modal-body" id="productListContent">
-                <!-- loaded dynamically -->
             </div>
 
         </div>
+
     </div>
+
 </div>
 
 @section Scripts {
+
     <script>
+
+        function markDirty(row) {
+            row.addClass("cell-dirty");
+        }
+
         $(document).on("input", "td[contenteditable=true]", function () {
-            $(this).closest("tr").addClass("table-warning"); // row changed
+            markDirty($(this).closest("tr"));
         });
 
         $(".saveBtn").click(function () {
@@ -204,18 +239,26 @@
 
             var data = {
                 Id: row.data("id"),
-                Name: row.find("td:eq(0)").text(),
-                Description: row.find("td:eq(1)").text()
+                Name: row.find("td:eq(0)").text().trim(),
+                Description: row.find("td:eq(1)").text().trim()
             };
 
             $.post("/Category/Edit", data, function (res) {
+
                 if (res.success) {
-                    row.removeClass("table-warning");
+
+                    row.removeClass("cell-dirty");
+
                     showModal("Success", "Category updated successfully");
+
                 } else {
                     showModal("Error", "Update failed");
                 }
+
+            }).fail(function () {
+                showModal("Error", "Server error");
             });
+
         });
 
         let deleteId = 0;
@@ -226,15 +269,14 @@
             deleteRow = $(this).closest("tr");
             deleteId = deleteRow.data("id");
 
-            let categoryName = deleteRow.find("td:eq(0)").text();
-
-            $("#deleteCategoryName").text(categoryName);
-
-            var modal = new bootstrap.Modal(
-                document.getElementById('deleteCategoryModal')
+            $("#deleteCategoryName").text(
+                deleteRow.find("td:eq(0)").text().trim()
             );
 
-            modal.show();
+            new bootstrap.Modal(
+                document.getElementById('deleteCategoryModal')
+            ).show();
+
         });
 
         $("#confirmDeleteBtn").click(function () {
@@ -244,22 +286,15 @@
                 $("#deleteCategoryModal").modal("hide");
 
                 if (res.success) {
-                    showModal("Success", "Category deleted successfully");
                     deleteRow.remove();
+                    showModal("Success", "Category deleted successfully");
                 } else {
-                    showModal("Error", "Category deleted failed");
+                    showModal("Error", "Delete failed");
                 }
 
-                
-
-                
             });
 
         });
-    </script>
-
-
-    <script>
 
         $("#btnCreateCategory").click(function () {
 
@@ -267,14 +302,13 @@
 
                 $("#createCategoryContent").html(data);
 
-                var modal = new bootstrap.Modal(
+                new bootstrap.Modal(
                     document.getElementById('createCategoryModal')
-                );
+                ).show();
 
-                modal.show();
             });
-        });
 
+        });
 
         $(document).on("submit", "#createCategoryForm", function (e) {
 
@@ -289,31 +323,24 @@
 
                     $("#createCategoryModal").modal("hide");
 
-                    showModal(
-                        "Success",
-                        "Category created successfully"
-                    );
+                    showModal("Success", "Category created successfully");
 
                     setTimeout(function () {
                         location.reload();
-                    }, 1000);
+                    }, 800);
+
                 },
 
                 error: function () {
-
-                    showModal(
-                        "Error",
-                        "Failed to create category"
-                    );
+                    showModal("Error", "Failed to create category");
                 }
+
             });
 
         });
 
-    </script>
+        $(document).on("click", ".productCountLink", function (e) {
 
-    <script>
-          $(document).on("click", ".productCountLink", function (e) {
             e.preventDefault();
 
             var categoryId = $(this).data("id");
@@ -322,12 +349,14 @@
 
                 $("#productListContent").html(data);
 
-                var modal = new bootstrap.Modal(
+                new bootstrap.Modal(
                     document.getElementById('productListModal')
-                );
+                ).show();
 
-                modal.show();
             });
+
         });
+
     </script>
+
 }
