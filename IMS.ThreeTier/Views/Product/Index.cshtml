@@ -1,0 +1,493 @@
+﻿@model IMS.WEB.ViewModels.ProductListViewModel
+
+<style>
+    #deleteProductModal .modal-body {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        white-space: normal;
+    }
+
+    #deleteProductName {
+        display: inline-block;
+        max-width: 100%;
+        word-break: break-word;
+        overflow-wrap: anywhere;
+    }
+
+    .price-cell {
+        text-align: right;
+        font-weight: 600;
+    }
+
+    .category-cell,
+    .supplier-cell {
+        min-width: 180px;
+    }
+
+    .category-select,
+    .supplier-select {
+        width: 100%;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Product List</h3>
+
+    <button class="btn btn-primary" id="btnCreateProduct">
+        + Create Product
+    </button>
+</div>
+
+<form method="get" class="mb-3 d-flex gap-2">
+
+    <input type="text"
+           name="search"
+           value="@Model.Search"
+           class="form-control"
+           placeholder="Search products..." />
+
+    <button class="btn btn-primary">Search</button>
+
+    <a href="/Product/Index" class="btn btn-secondary">
+        Reset
+    </a>
+
+</form>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-edit-grid" id="productTable">
+
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Category</th>
+                <th>Supplier</th>
+
+                @if (User.IsInRole("Admin"))
+                {
+                    <th>Created At</th>
+                    <th>Created By</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
+                }
+
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.Products)
+            {
+                <tr data-id="@item.Id">
+
+                    <td class="editable-cell"
+                        contenteditable="true">
+                        @item.Name
+                    </td>
+
+                    <td class="editable-cell price-cell"
+                        contenteditable="true">
+                        @item.Price
+                    </td>
+
+                    <td>
+                        <span class="badge bg-info">
+                            @item.Quantity
+                        </span>
+                    </td>
+
+                    <td>
+                        <select class="form-select  category-select">
+
+                            @foreach (var cat in Model.Categories)
+                            {
+                                <option value="@cat.Id"
+                                        selected="@(cat.Id == item.CategoryId)">
+                                    @cat.Name
+                                </option>
+                            }
+
+                        </select>
+                    </td>
+
+                    <td>
+                        <select class="form-select  supplier-select">
+
+                            @foreach (var sup in Model.Suppliers)
+                            {
+                                <option value="@sup.Id"
+                                        selected="@(sup.Id == item.SupplierId)">
+                                    @sup.Name
+                                </option>
+                            }
+
+                        </select>
+                    </td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td class="audit-cell">
+                            @item.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                        </td>
+
+                        <td class="audit-cell">
+                            @item.CreatedBy
+                        </td>
+
+                        <td class="audit-cell audit-updated">
+                            @item.LastModifiedAt
+                        </td>
+
+                        <td class="audit-cell audit-updatedby">
+                            @item.LastModifiedBy
+                        </td>
+                    }
+
+                    <td class="actions-cell">
+
+                        <div class="action-buttons">
+
+                            <button type="button"
+                                    class="btn btn-success btn-sm saveBtn">
+                                Update
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-danger btn-sm deleteBtn">
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<nav>
+
+    <ul class="pagination">
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.Page ? "active" : "")">
+
+                <a class="page-link"
+                   href="/Product/Index?page=@i&pageSize=@Model.PageSize&search=@Model.Search">
+                    @i
+                </a>
+
+            </li>
+        }
+
+    </ul>
+
+</nav>
+
+<div class="modal fade" id="createProductModal" tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content" id="createProductContent">
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="deleteProductModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title text-danger">
+                    Confirm Delete
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <p>
+                    Are you sure you want to delete
+                    <strong id="deleteProductName"></strong>?
+                </p>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                    Cancel
+                </button>
+
+                <button class="btn btn-danger"
+                        id="confirmDeleteBtn">
+                    Delete
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="errorModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title text-danger">
+                    Error
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal">
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div id="errorMessage"></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        function showError(msg) {
+
+            $("#errorMessage").text(msg);
+
+            new bootstrap.Modal(
+                document.getElementById('errorModal')
+            ).show();
+        }
+
+        $(document).on("input", ".editable-cell, .price-cell", function () {
+
+            $(this).closest("tr").addClass("cell-dirty");
+
+        });
+
+        $(document).on("change", ".category-select, .supplier-select",
+        function () {
+
+            $(this).closest("tr").addClass("cell-dirty");
+
+        });
+
+        $(document).on("input", ".price-cell", function () {
+
+            let text = $(this).text();
+
+            text = text.replace(/[^0-9.]/g, '');
+
+            let parts = text.split('.');
+
+            if (parts.length > 2) {
+                text = parts[0] + '.' + parts[1];
+            }
+
+            if (parts[1]) {
+                text = parts[0] + '.' + parts[1].substring(0, 2);
+            }
+
+            $(this).text(text);
+
+        });
+
+        $(".saveBtn").click(function () {
+
+            var row = $(this).closest("tr");
+
+            var data = {
+                Id: row.data("id"),
+                Name: row.find(".editable-cell").first().text().trim(),
+                Price: row.find(".price-cell").text().trim(),
+                CategoryId: row.find(".category-select").val(),
+                SupplierId: row.find(".supplier-select").val()
+            };
+
+            $.post("/Product/Edit", data, function (res) {
+
+                if (res.success) {
+
+                    row.removeClass("cell-dirty");
+
+                    if (res.lastModifiedAt) {
+                        row.find(".audit-updated")
+                            .text(res.lastModifiedAt);
+                    }
+
+                    if (res.lastModifiedBy) {
+                        row.find(".audit-updatedby")
+                            .text(res.lastModifiedBy);
+                    }
+
+                    showModal(
+                        "Success",
+                        "Product updated successfully"
+                    );
+
+                } else {
+
+                    showError(
+                        res.message || "Update failed"
+                    );
+                }
+
+            }).fail(function (xhr) {
+
+                showError(
+                    xhr.responseText || "Server error"
+                );
+
+            });
+
+        });
+
+        let deleteId = 0;
+        let deleteRow = null;
+
+        $(".deleteBtn").click(function () {
+
+            deleteRow = $(this).closest("tr");
+
+            deleteId = deleteRow.data("id");
+
+            $("#deleteProductName").text(
+                deleteRow.find(".editable-cell")
+                    .first()
+                    .text()
+                    .trim()
+            );
+
+            new bootstrap.Modal(
+                document.getElementById('deleteProductModal')
+            ).show();
+
+        });
+
+        $("#confirmDeleteBtn").click(function () {
+
+            $.post("/Product/Delete",
+                { id: deleteId },
+
+                function (res) {
+
+                    $("#deleteProductModal").modal("hide");
+
+                    if (res.success) {
+
+                        deleteRow.remove();
+
+                        showModal(
+                            "Success",
+                            "Product deleted successfully"
+                        );
+
+                    } else {
+
+                        showError(
+                            res.message || "Delete failed"
+                        );
+                    }
+
+                });
+
+        });
+
+        /* CREATE */
+        $("#btnCreateProduct").click(function () {
+
+            $.get("/Product/Create", function (data) {
+
+                $("#createProductContent").html(data);
+
+                new bootstrap.Modal(
+                    document.getElementById('createProductModal')
+                ).show();
+
+            });
+
+        });
+
+
+        $(document).on("submit", "#createProductForm", function (e) {
+
+            e.preventDefault();
+
+            $.ajax({
+
+                url: "/Product/Create",
+
+                type: "POST",
+
+                data: $(this).serialize(),
+
+                success: function () {
+
+                    $("#createProductModal").modal("hide");
+
+                    showModal(
+                        "Success",
+                        "Product created successfully"
+                    );
+
+                    setTimeout(function () {
+
+                        location.reload();
+
+                    }, 800);
+
+                },
+
+                error: function (xhr) {
+
+                    showError(
+                        xhr.responseText || "Failed to create product"
+                    );
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+}

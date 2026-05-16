@@ -1,0 +1,69 @@
+﻿@model IMS.WEB.ViewModels.ProductCreateViewModel
+
+<div class="modal-header">
+
+    <h5 class="modal-title">Create Product</h5>
+
+    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+</div>
+
+<form id="createProductForm">
+
+    <div class="modal-body">
+
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Price" class="form-label"></label>
+            <input asp-for="Price" class="form-control" />
+            <span asp-validation-for="Price" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label"></label>
+            <select asp-for="CategoryId" class="form-control">
+                <option value="">-- Select Category --</option>
+                @foreach (var cat in ViewBag.Categories)
+                {
+                    <option value="@cat.Id">@cat.Name</option>
+                }
+            </select>
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="SupplierId" class="form-label"></label>
+            <select asp-for="SupplierId" class="form-control">
+                <option value="">-- Select Supplier --</option>
+                @foreach (var sup in ViewBag.Suppliers)
+                {
+                    <option value="@sup.Id">@sup.Name</option>
+                }
+            </select>
+            <span asp-validation-for="SupplierId" class="text-danger"></span>
+        </div>
+
+    </div>
+
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="modal-footer">
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Close
+        </button>
+
+        <button type="submit" class="btn btn-primary">
+            Save
+        </button>
+
+    </div>
+
+</form>
+
+<partial name="_ValidationScriptsPartial" />

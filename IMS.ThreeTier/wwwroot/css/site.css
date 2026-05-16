@@ -1,0 +1,90 @@
+﻿.table-edit-grid {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-edit-grid th,
+.table-edit-grid td {
+    vertical-align: middle;
+    word-wrap: break-word;
+    white-space: normal;
+    overflow-wrap: break-word;
+    padding: 10px;
+}
+
+.table-edit-grid td,
+.table-edit-grid th {
+    box-sizing: border-box;
+}
+
+/* =========================
+EDITABLE CELLS
+========================= */
+.table-edit-grid td.editable-cell {
+    background-color: #f3f4f6;
+    cursor: text;
+    transition: background 0.2s ease;
+    border-radius: 0;
+    min-height: 40px;
+}
+
+.table-edit-grid td.editable-cell:hover {
+    background-color: #fff7d6;
+}
+
+.table-edit-grid td.editable-cell:focus {
+    background-color: #ffffff;
+    outline: 2px solid #ffd966;
+}
+
+/* =========================
+DIRTY ROW
+========================= */
+.table-edit-grid tr.cell-dirty td {
+    background-color: #dbeafe !important;
+}
+
+.table-edit-grid tr.cell-dirty td.editable-cell {
+    background-color: #dbeafe !important;
+}
+
+/* =========================
+   ACTIONS
+========================= */
+.actions-cell {
+    min-width: 190px;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+/* =========================
+   BADGES
+========================= */
+.badge {
+    font-size: 0.85rem;
+    padding: 6px 10px;
+}
+
+/* =========================
+   TABLE WRAP FIX
+========================= */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* =========================
+   AUDIT
+========================= */
+.audit-cell {
+    font-size: 0.85rem;
+    color: #666;
+}
