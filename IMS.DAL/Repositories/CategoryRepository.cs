@@ -27,7 +27,7 @@ namespace IMS.DAL.Repositories
             var totalCount = await query.CountAsync();
 
             var items = await query
-                .Include(c => c.Products)
+                .Include(c => c.Products.Where(p => !p.IsDeleted))
                 .OrderByDescending(c => c.Id)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
