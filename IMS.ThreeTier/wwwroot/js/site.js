@@ -1,4 +1,4 @@
-﻿function showModal(title, message, type = "success") {
+﻿function showModal(title, message, type) {
 
     $("#modalTitle").text(title);
 
@@ -10,10 +10,13 @@
         "bg-success bg-danger bg-warning text-white"
     );
 
-    if (type === "success") {
+    if (!type)
+        type = title;
+
+    if (type.toLowerCase() === "success") {
         header.addClass("bg-success text-white");
     }
-    else if (type === "error") {
+    else if (type.toLowerCase() === "error") {
         header.addClass("bg-danger text-white");
     }
 

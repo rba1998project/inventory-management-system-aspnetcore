@@ -5,8 +5,7 @@
 
     <h3>Supplier List</h3>
 
-    <button class="btn btn-primary"
-            id="btnCreateSupplier">
+    <button class="btn btn-primary" id="btnCreateSupplier">
         + Create Supplier
     </button>
 
@@ -20,90 +19,116 @@
            class="form-control"
            placeholder="Search suppliers..." />
 
-    <button class="btn btn-primary">Search</button>
+    <button type="submit" class="btn btn-primary">
+        Search
+    </button>
 
-    <a href="/Supplier/Index" class="btn btn-secondary">Reset</a>
+    <a href="/Supplier/Index" class="btn btn-secondary">
+        Reset
+    </a>
 
 </form>
 
-<table class="table table-bordered" id="supplierTable">
+<div class="table-responsive">
 
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Contact Person</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>Products</th>
+    <table class="table table-bordered table-edit-grid" id="supplierTable">
 
-            @if (User.IsInRole("Admin"))
-            {
-                <th>Created At</th>
-                <th>Created By</th>
-                <th>Last Updated</th>
-                <th>Updated By</th>
-            }
-
-            <th>Actions</th>
-        </tr>
-    </thead>
-
-    <tbody>
-
-        @foreach (var item in Model.Suppliers)
-        {
-            <tr data-id="@item.Id">
-
-                <td contenteditable="true">@item.Name</td>
-                <td contenteditable="true">@item.ContactPerson</td>
-                <td contenteditable="true">@item.Email</td>
-                <td contenteditable="true">@item.Phone</td>
-                <td contenteditable="true">@item.Address</td>
-
-                <td>
-                    @if (item.ProductCount > 0)
-                    {
-                        <a href="#"
-                           class="productCountLink text-primary"
-                           data-id="@item.Id">
-                            @item.ProductCount
-                        </a>
-                    }
-                    else
-                    {
-                        <span class="text-muted">0</span>
-                    }
-                </td>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Contact Person</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Products</th>
 
                 @if (User.IsInRole("Admin"))
                 {
-                    <td>@item.CreatedAt</td>
-                    <td>@item.CreatedBy</td>
-                    <td>@item.LastModifiedAt</td>
-                    <td>@item.LastModifiedBy</td>
+                    <th>Created At</th>
+                    <th>Created By</th>
+                    <th>Last Updated</th>
+                    <th>Updated By</th>
                 }
 
-                <td>
-                    <div class="d-flex gap-2 w-100">
-
-                        <button class="btn btn-success btn-sm flex-fill saveBtn">
-                            Update
-                        </button>
-
-                        <button class="btn btn-danger btn-sm flex-fill deleteBtn">
-                            Delete
-                        </button>
-
-                    </div>
-                </td>
-
+                <th>Actions</th>
             </tr>
-        }
+        </thead>
 
-    </tbody>
+        <tbody>
 
-</table>
+            @foreach (var item in Model.Suppliers)
+            {
+                <tr data-id="@item.Id">
+
+                    <td class="editable-cell" contenteditable="true">
+                        @item.Name
+                    </td>
+
+                    <td class="editable-cell" contenteditable="true">
+                        @item.ContactPerson
+                    </td>
+
+                    <td class="editable-cell" contenteditable="true" data-type="email">
+                        @item.Email
+                    </td>
+
+                    <td class="editable-cell" contenteditable="true" data-type="phone">
+                        @item.Phone
+                    </td>
+
+                    <td class="editable-cell" contenteditable="true">
+                        @item.Address
+                    </td>
+
+                    <td>
+                        @if (item.ProductCount > 0)
+                        {
+                            <a href="#"
+                               class="productCountLink text-primary"
+                               data-id="@item.Id">
+                                @item.ProductCount
+                            </a>
+                        }
+                        else
+                        {
+                            <span class="text-muted">0</span>
+                        }
+                    </td>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <td class="audit-cell">@item.CreatedAt</td>
+                        <td class="audit-cell">@item.CreatedBy</td>
+                        <td class="audit-cell">@item.LastModifiedAt</td>
+                        <td class="audit-cell">@item.LastModifiedBy</td>
+                    }
+
+                    <td class="actions-cell">
+
+                        <div class="action-buttons">
+
+                            <button type="button"
+                                    class="btn btn-success btn-sm saveBtn">
+                                Update
+                            </button>
+
+                            <button type="button"
+                                    class="btn btn-danger btn-sm deleteBtn">
+                                Delete
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
 
 <nav>
     <ul class="pagination">
@@ -125,8 +150,7 @@
 
 <div class="modal fade" id="createSupplierModal" tabindex="-1">
     <div class="modal-dialog">
-        <div class="modal-content" id="createSupplierContent">
-        </div>
+        <div class="modal-content" id="createSupplierContent"></div>
     </div>
 </div>
 
@@ -157,7 +181,7 @@
                 </p>
 
                 <p class="text-danger">
-                    Deleting this supplier will also permanently delete all associated products.
+                    Deleting this supplier will also delete all related products.
                 </p>
 
             </div>
@@ -211,154 +235,163 @@
 </div>
 
 @section Scripts {
+<script>
 
-    <script>
+    function showError(msg) {
+        showModal("Error", msg);
+    }
 
-        $(document).on("input", "td[contenteditable=true]", function () {
-            $(this).closest("tr").addClass("table-warning");
+    function showSuccess(msg) {
+        showModal("Success", msg);
+    }
+
+    function markDirty(row) {
+        row.addClass("cell-dirty");
+    }
+
+    // mark row dirty on edit
+    $(document).on("input", "td[contenteditable=true]", function () {
+        markDirty($(this).closest("tr"));
+    });
+
+    // restrict phone typing (live cleanup)
+    $(document).on("input", "[data-type='phone']", function () {
+        let text = $(this).text();
+        text = text.replace(/[^0-9+\-\s]/g, '');
+        $(this).text(text);
+    });
+
+    $(".saveBtn").click(function () {
+
+        var row = $(this).closest("tr");
+
+        var email = row.find("[data-type='email']").text().trim();
+        var phone = row.find("[data-type='phone']").text().trim();
+
+        // SAFE EMAIL regex (important: no syntax issues in Razor)
+        var emailRegex = new RegExp("^[^\\s@@]+@@[^\\s@@]+\\.[^\\s@@]+$");
+
+        // PHONE regex
+        var phoneRegex = new RegExp("^[0-9+\\-\\s]{7,15}$");
+
+        if (!emailRegex.test(email)) {
+            showError("Invalid email format");
+            return;
+        }
+
+        if (!phoneRegex.test(phone)) {
+            showError("Invalid phone number");
+            return;
+        }
+
+        var data = {
+            Id: row.data("id"),
+            Name: row.find("td:eq(0)").text().trim(),
+            ContactPerson: row.find("td:eq(1)").text().trim(),
+            Email: email,
+            Phone: phone,
+            Address: row.find("td:eq(4)").text().trim()
+        };
+
+        $.post("/Supplier/Edit", data, function (res) {
+
+            if (res.success) {
+                row.removeClass("cell-dirty");
+                showSuccess("Supplier updated successfully");
+            } else {
+                showError(res.message || "Update failed");
+            }
+
+        }).fail(function () {
+            showError("Server error");
         });
+    });
 
-        $(".saveBtn").click(function () {
+    let deleteId = 0;
+    let deleteRow = null;
 
-            var row = $(this).closest("tr");
+    $(".deleteBtn").click(function () {
 
-            var data = {
-                Id: row.data("id"),
-                Name: row.find("td:eq(0)").text(),
-                ContactPerson: row.find("td:eq(1)").text(),
-                Email: row.find("td:eq(2)").text(),
-                Phone: row.find("td:eq(3)").text(),
-                Address: row.find("td:eq(4)").text()
-            };
+        deleteRow = $(this).closest("tr");
+        deleteId = deleteRow.data("id");
 
-            $.post("/Supplier/Edit", data, function (res) {
+        $("#deleteSupplierName").text(
+            deleteRow.find("td:eq(0)").text().trim()
+        );
 
-                if (res.success) {
+        new bootstrap.Modal(
+            document.getElementById('deleteSupplierModal')
+        ).show();
+    });
 
-                    row.removeClass("table-warning");
+    $("#confirmDeleteBtn").click(function () {
 
-                    showModal("Success", "Supplier updated successfully");
+        $.post("/Supplier/Delete", { id: deleteId }, function (res) {
 
-                } else {
+            $("#deleteSupplierModal").modal("hide");
 
-                    showModal("Error", "Update failed");
-                }
-            });
+            if (res.success) {
+                deleteRow.remove();
+                showSuccess("Supplier deleted successfully");
+            } else {
+                showError("Delete failed");
+            }
         });
+    });
 
-        let deleteId = 0;
-        let deleteRow = null;
+    $("#btnCreateSupplier").click(function () {
 
-        $(".deleteBtn").click(function () {
+        $.get("/Supplier/Create", function (data) {
 
-            deleteRow = $(this).closest("tr");
+            $("#createSupplierContent").html(data);
 
-            deleteId = deleteRow.data("id");
-
-            let supplierName = deleteRow.find("td:eq(0)").text();
-
-            $("#deleteSupplierName").text(supplierName);
-
-            var modal = new bootstrap.Modal(
-                document.getElementById('deleteSupplierModal')
-            );
-
-            modal.show();
+            new bootstrap.Modal(
+                document.getElementById('createSupplierModal')
+            ).show();
         });
+    });
 
-        $("#confirmDeleteBtn").click(function () {
+    $(document).on("submit", "#createSupplierForm", function (e) {
 
-            $.post("/Supplier/Delete", { id: deleteId }, function (res) {
+        e.preventDefault();
 
-                $("#deleteSupplierModal").modal("hide");
+        $.ajax({
+            url: "/Supplier/Create",
+            type: "POST",
+            data: $(this).serialize(),
 
-                if (res.success) {
+            success: function () {
 
-                    showModal("Success", "Supplier deleted successfully");
+                $("#createSupplierModal").modal("hide");
 
-                    deleteRow.remove();
+                showSuccess("Supplier created successfully");
 
-                } else {
+                setTimeout(function () {
+                    location.reload();
+                }, 800);
+            },
 
-                    showModal("Error", "Delete failed");
-                }
-            });
+            error: function () {
+                showError("Failed to create supplier");
+            }
         });
+    });
 
-    </script>
+    $(document).on("click", ".productCountLink", function (e) {
 
-    <script>
+        e.preventDefault();
 
-        $("#btnCreateSupplier").click(function () {
+        var supplierId = $(this).data("id");
 
-            $.get("/Supplier/Create", function (data) {
+        $.get("/Supplier/GetProducts", { id: supplierId }, function (data) {
 
-                $("#createSupplierContent").html(data);
+            $("#productListContent").html(data);
 
-                var modal = new bootstrap.Modal(
-                    document.getElementById('createSupplierModal')
-                );
-
-                modal.show();
-            });
+            new bootstrap.Modal(
+                document.getElementById('productListModal')
+            ).show();
         });
+    });
 
-        $(document).on("submit", "#createSupplierForm", function (e) {
-
-            e.preventDefault();
-
-            $.ajax({
-
-                url: "/Supplier/Create",
-                type: "POST",
-                data: $(this).serialize(),
-
-                success: function () {
-
-                    $("#createSupplierModal").modal("hide");
-
-                    showModal(
-                        "Success",
-                        "Supplier created successfully"
-                    );
-
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                },
-
-                error: function () {
-
-                    showModal(
-                        "Error",
-                        "Failed to create supplier"
-                    );
-                }
-            });
-        });
-
-    </script>
-
-    <script>
-
-        $(document).on("click", ".productCountLink", function (e) {
-
-            e.preventDefault();
-
-            var supplierId = $(this).data("id");
-
-            $.get("/Supplier/GetProducts", { id: supplierId }, function (data) {
-
-                $("#productListContent").html(data);
-
-                var modal = new bootstrap.Modal(
-                    document.getElementById('productListModal')
-                );
-
-                modal.show();
-            });
-        });
-
-    </script>
-
+</script>
 }

@@ -52,18 +52,15 @@ DIRTY ROW
 /* =========================
    ACTIONS
 ========================= */
-.actions-cell {
-    min-width: 190px;
-    white-space: nowrap;
-    text-align: center;
-}
-
 .action-buttons {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: nowrap;
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+}
+
+.action-buttons .btn {
+    width: 100%;
 }
 
 /* =========================
@@ -90,23 +87,3 @@ DIRTY ROW
     color: #666;
 }
 
-/* =========================
-   RESPONSIVE ACTION BUTTONS
-========================= */
-
-@media (max-width: 1400px) {
-
-    .actions-cell {
-        min-width: auto;
-    }
-
-    .action-buttons {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 4px;
-    }
-
-    .action-buttons .btn {
-        width: 100%;
-    }
-}
