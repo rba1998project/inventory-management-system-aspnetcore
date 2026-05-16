@@ -1,14 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IMS.BLL.DTOs;
+using IMS.BLL.Interfaces;
+using IMS.WEB.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.WEB.Controllers
 {
-    using IMS.BLL.DTOs;
-    using IMS.BLL.Interfaces;
-    using IMS.WEB.ViewModels;
-    using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Mvc;
-    using static System.Runtime.InteropServices.JavaScript.JSType;
-
     [Authorize]
     public class CategoryController : Controller
     {
