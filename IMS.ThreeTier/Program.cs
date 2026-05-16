@@ -69,13 +69,16 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Seed default admin for demo purposes (not for production)
-using (var scope = app.Services.CreateScope())
+// Seed default admin + demo data for demo purposes (not for production)
+if (app.Environment.IsDevelopment())
 {
-    var services = scope.ServiceProvider;
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
 
-    await IdentitySeeder.SeedAdminUserAsync(services);
+        await IdentitySeeder.SeedAdminUserAsync(services);
+        await DataSeeder.SeedAsync(services);
+    }
 }
-
 
 app.Run();
