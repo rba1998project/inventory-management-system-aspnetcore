@@ -95,7 +95,7 @@ namespace IMS.BLL.Services
                 CategoryId = dto.CategoryId,
                 SupplierId = dto.SupplierId,
                 ImagePath = dto.ImagePath,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 CreatedBy = user
             };
 
@@ -112,7 +112,7 @@ namespace IMS.BLL.Services
             product.SupplierId = dto.SupplierId;
             product.ImagePath = dto.ImagePath;
 
-            product.LastModifiedAt = DateTime.Now;
+            product.LastModifiedAt = DateTime.UtcNow;
             product.LastModifiedBy = user;
 
             await _repo.UpdateAsync(product);

@@ -75,7 +75,7 @@ namespace IMS.BLL.Services
             {
                 Name = dto.Name,
                 Description = dto.Description,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 CreatedBy = user
             };
 
@@ -89,7 +89,7 @@ namespace IMS.BLL.Services
 
             category.Name = dto.Name;
             category.Description = dto.Description;
-            category.LastModifiedAt = DateTime.Now;
+            category.LastModifiedAt = DateTime.UtcNow;
             category.LastModifiedBy = user;
 
             await _repo.UpdateAsync(category);

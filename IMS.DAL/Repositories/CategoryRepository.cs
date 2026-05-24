@@ -73,7 +73,7 @@ namespace IMS.DAL.Repositories
 
             category.IsDeleted = true;
             category.LastModifiedBy = user;
-            category.LastModifiedAt = DateTime.Now;
+            category.LastModifiedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
         }

@@ -34,7 +34,7 @@ namespace IMS.Models
         [MaxLength(300)]
         public string? ImagePath { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Required]
         public string CreatedBy { get; set; }

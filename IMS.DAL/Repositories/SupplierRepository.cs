@@ -68,7 +68,7 @@ namespace IMS.DAL.Repositories
             var supplier = await _context.Suppliers.FindAsync(id);
 
             supplier.IsDeleted = true;
-            supplier.LastModifiedAt = DateTime.Now;
+            supplier.LastModifiedAt = DateTime.UtcNow;
             supplier.LastModifiedBy = user;
 
             await _context.SaveChangesAsync();

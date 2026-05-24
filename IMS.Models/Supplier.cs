@@ -22,7 +22,7 @@ namespace IMS.Models
         [MaxLength(300)]
         public string? Address { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Required]
         public string CreatedBy { get; set; }

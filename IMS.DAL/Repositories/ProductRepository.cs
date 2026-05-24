@@ -71,7 +71,7 @@ namespace IMS.DAL.Repositories
             var product = await _context.Products.FindAsync(id);
 
             product.IsDeleted = true;
-            product.LastModifiedAt = DateTime.Now;
+            product.LastModifiedAt = DateTime.UtcNow;
             product.LastModifiedBy = user;
 
             await _context.SaveChangesAsync();

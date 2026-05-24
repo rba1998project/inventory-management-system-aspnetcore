@@ -13,7 +13,7 @@ namespace IMS.Models
         [MaxLength(250)]
         public string? Description { get; set; }
 
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         [Required]
         [MaxLength(150)]

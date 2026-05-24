@@ -84,7 +84,7 @@ namespace IMS.BLL.Services
                 Email = dto.Email,
                 Phone = dto.Phone,
                 Address = dto.Address,
-                CreatedAt = DateTime.Now,
+                CreatedAt = DateTime.UtcNow,
                 CreatedBy = user
             };
 
@@ -100,7 +100,7 @@ namespace IMS.BLL.Services
             supplier.Email = dto.Email;
             supplier.Phone = dto.Phone;
             supplier.Address = dto.Address;
-            supplier.LastModifiedAt = DateTime.Now;
+            supplier.LastModifiedAt = DateTime.UtcNow;
             supplier.LastModifiedBy = user;
 
             await _repo.UpdateAsync(supplier);
