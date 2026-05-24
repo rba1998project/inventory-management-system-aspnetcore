@@ -14,6 +14,7 @@ namespace IMS.DAL.Context
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Supplier> Suppliers { get; set; }
+        public DbSet<StockTransaction> StockTransactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -50,6 +51,12 @@ namespace IMS.DAL.Context
                 .HasOne(p => p.Supplier)
                 .WithMany(s => s.Products)
                 .HasForeignKey(p => p.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<StockTransaction>()
+                .HasOne(st => st.Product)
+                .WithMany(p => p.StockTransactions)
+                .HasForeignKey(st => st.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

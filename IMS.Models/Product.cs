@@ -17,7 +17,7 @@ namespace IMS.Models
         public decimal Price { get; set; }
 
         [Range(0, int.MaxValue)]
-        public int Quantity { get; set; }= 0;
+        public int Quantity { get; set; } = 0;
 
         // FK → Category
         [Required]
@@ -44,5 +44,9 @@ namespace IMS.Models
         public string? LastModifiedBy { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+
+        //added for stock transactions
+        public ICollection<StockTransaction> StockTransactions { get; set; }
+            = new List<StockTransaction>();
     }
 }
