@@ -3,6 +3,8 @@ using IMS.BLL.Interfaces;
 using IMS.WEB.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using ClosedXML.Excel;
+using Rotativa.AspNetCore;
 
 namespace IMS.WEB.Controllers
 {
@@ -183,6 +185,110 @@ namespace IMS.WEB.Controllers
             {
                 success = true
             });
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ExportExcel(string search = "")
+        {
+            var transactions = await _stockService
+                .GetAllTransactionsAsync();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                transactions = transactions
+                    .Where(t => t.Product.Name
+                    .Contains(search,
+                    StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            using var workbook = new XLWorkbook();
+
+            var worksheet = workbook.Worksheets
+                .Add("TransactionHistory");
+
+            worksheet.Cell(1, 1).Value = "Transaction History Report";
+
+            worksheet.Cell(2, 1).Value = $"Generated At: {DateTime.Now:dd/MM/yyyy HH:mm}";
+
+            worksheet.Cell(1, 1).Style.Font.Bold = true;
+            worksheet.Cell(1, 1).Style.Font.FontSize = 16;
+
+            worksheet.Cell(4, 1).Value = "Product";
+            worksheet.Cell(4, 2).Value = "Type";
+            worksheet.Cell(4, 3).Value = "Quantity";
+            worksheet.Cell(4, 4).Value = "Previous";
+            worksheet.Cell(4, 5).Value = "New";
+            worksheet.Cell(4, 6).Value = "Remarks";
+            worksheet.Cell(4, 7).Value = "Date";
+            worksheet.Cell(4, 8).Value = "User";
+
+
+            var headerRange = worksheet.Range(4, 1, 4, 8);
+            headerRange.Style.Font.Bold = true;
+            headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+            int row = 5;
+
+            foreach (var item in transactions)
+            {
+                worksheet.Cell(row, 1).Value = item.Product.Name;
+                worksheet.Cell(row, 2).Value =
+                    item.TransactionType.ToString();
+
+                worksheet.Cell(row, 3).Value = item.Quantity;
+                worksheet.Cell(row, 4).Value =
+                    item.PreviousQuantity;
+
+                worksheet.Cell(row, 5).Value =
+                    item.NewQuantity;
+
+                worksheet.Cell(row, 6).Value =
+                    item.Remarks;
+
+                worksheet.Cell(row, 7).Value =
+                    item.CreatedAt.ToString("dd/MM/yyyy HH:mm");
+
+                worksheet.Cell(row, 8).Value =
+                    item.CreatedBy;
+
+                row++;
+            }
+
+            worksheet.Columns().AdjustToContents();
+
+            using var stream = new MemoryStream();
+
+            workbook.SaveAs(stream);
+
+            return File(
+                stream.ToArray(),
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                $"TransactionHistory_{DateTime.Now:ddMMyyyyHHmmss}.xlsx");
+        }
+
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ExportPdf(string search = "")
+        {
+            var transactions = await _stockService
+                .GetAllTransactionsAsync();
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                transactions = transactions
+                    .Where(t => t.Product.Name
+                    .Contains(search,
+                    StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            return new ViewAsPdf(
+                "ExportPdf",
+                transactions)
+            {
+                FileName =
+                    $"TransactionHistory_{DateTime.Now:ddMMyyyyHHmmss}.pdf"
+            };
         }
     }
 }

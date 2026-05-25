@@ -50,6 +50,11 @@ builder.Services.AddScoped<IStockService, StockService>();
 
 var app = builder.Build();
 
+Rotativa.AspNetCore.RotativaConfiguration.Setup(
+    app.Environment.WebRootPath,
+    "Rotativa"
+);
+
 
 // Middleware
 if (!app.Environment.IsDevelopment())

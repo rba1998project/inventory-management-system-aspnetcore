@@ -1,0 +1,115 @@
+﻿@model List<IMS.Models.StockTransaction>
+
+<style>
+
+    body {
+        font-family: Arial;
+        font-size: 12px;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    th {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 2px solid #ccc;
+    }
+
+    td {
+        padding: 8px;
+        vertical-align: top;
+        border-bottom: 1px solid #eee;
+    }
+
+    .date-column {
+        width: 160px;
+    }
+
+    .user-column {
+        width: 90px;
+    }
+
+</style>
+
+<h2>Transaction History</h2>
+
+<p style="margin-bottom:20px; color:gray;">
+
+    Generated At:
+    @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+
+</p>
+
+<table>
+
+    <thead>
+
+        <tr>
+            <th>Product</th>
+            <th>Type</th>
+            <th>Qty</th>
+            <th>Previous</th>
+            <th>New</th>
+            <th>Remarks</th>
+            <th class="date-column">
+                Date
+            </th>
+            <th class="user-column">
+                User
+            </th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                <td>
+                    @item.Product.Name
+                </td>
+
+                <td>
+                    @item.TransactionType
+                </td>
+
+                <td>
+                    @item.Quantity
+                </td>
+
+                <td>
+                    @item.PreviousQuantity
+                </td>
+
+                <td>
+                    @item.NewQuantity
+                </td>
+
+                <td>
+                    @item.Remarks
+                </td>
+
+                <td class="date-column">
+                    @(item.CreatedAt
+                                    .ToString("dd/MM/yyyy HH:mm"))
+            </td>
+
+                <td class="user-column">
+                    @item.CreatedBy
+                </td>
+
+            </tr>
+                }
+
+    </tbody>
+
+</table>

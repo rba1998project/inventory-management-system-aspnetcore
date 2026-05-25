@@ -1,19 +1,27 @@
 ﻿@model IMS.WEB.ViewModels.StockHistoryViewModel
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-
+<div class="d-flex justify-content-between align-items-center">
     <h3>Transaction History</h3>
-
 </div>
 
-<div class="mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3">
 
     <a href="/Stock/Index"
        class="btn btn-secondary">
-
         ← Back to Inventory
-
     </a>
+
+    <div class="d-flex gap-2">
+        <a href="/Stock/ExportExcel?search=@Model.Search"
+           class="btn btn-success">
+            Export Excel
+        </a>
+
+        <a href="/Stock/ExportPdf?search=@Model.Search"
+           class="btn btn-danger">
+            Export PDF
+        </a>
+    </div>
 
 </div>
 
@@ -39,7 +47,7 @@
 
 <div class="table-responsive">
 
-    <table  class="table table-bordered table-edit-grid">
+    <table class="table table-bordered table-edit-grid">
 
         <thead>
 
@@ -64,9 +72,7 @@
                 {
                     <tr>
 
-                        <td>
-                            @item.ProductName
-                        </td>
+                        <td>@item.ProductName</td>
 
                         <td>
 
@@ -85,29 +91,17 @@
 
                         </td>
 
-                        <td>
-                            @item.Quantity
-                        </td>
+                        <td>@item.Quantity</td>
 
-                        <td>
-                            @item.PreviousQuantity
-                        </td>
+                        <td>@item.PreviousQuantity</td>
 
-                        <td>
-                            @item.NewQuantity
-                        </td>
+                        <td>@item.NewQuantity</td>
 
-                        <td>
-                            @item.Remarks
-                        </td>
+                        <td>@item.Remarks</td>
 
-                        <td>
-                            @item.CreatedAt
-                        </td>
+                        <td>@item.CreatedAt</td>
 
-                        <td>
-                            @item.CreatedBy
-                        </td>
+                        <td>@item.CreatedBy</td>
 
                     </tr>
                 }
