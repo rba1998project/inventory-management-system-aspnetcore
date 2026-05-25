@@ -19,18 +19,26 @@ namespace IMS.DAL.Repositories
             await _context.StockTransactions.AddAsync(transaction);
         }
 
-        public async Task<List<StockTransaction>> GetTransactionsByProductIdAsync(int productId)
-        {
-            return await _context.StockTransactions
-                .Include(st => st.Product)
-                .Where(st => st.ProductId == productId)
-                .OrderByDescending(st => st.CreatedAt)
-                .ToListAsync();
-        }
+        //public async Task<List<StockTransaction>> GetTransactionsByProductIdAsync(int productId)
+        //{
+        //    return await _context.StockTransactions
+        //        .Include(st => st.Product)
+        //        .Where(st => st.ProductId == productId)
+        //        .OrderByDescending(st => st.CreatedAt)
+        //        .ToListAsync();
+        //}
 
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<StockTransaction>> GetAllTransactionsAsync()
+        {
+            return await _context.StockTransactions
+                .Include(s => s.Product)
+                .OrderByDescending(s => s.CreatedAt)
+                .ToListAsync();
         }
     }
 }

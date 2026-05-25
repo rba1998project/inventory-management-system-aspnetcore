@@ -1,0 +1,71 @@
+﻿@model IMS.WEB.ViewModels.StockInViewModel
+
+<div class="modal-header">
+
+    <h5 class="modal-title">
+        Stock IN - @ViewBag.ProductName
+    </h5>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="modal">
+    </button>
+
+</div>
+
+<form id="stockInForm">
+
+    <div class="modal-body">
+
+        <input type="hidden"
+               asp-for="ProductId" />
+
+        <div class="alert alert-info">
+
+            Current Stock:
+            <strong>@ViewBag.CurrentStock</strong>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Quantity
+            </label>
+
+            <input asp-for="Quantity"
+                   type="number"
+                   min="1"
+                   class="form-control" />
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Remarks
+            </label>
+
+            <textarea asp-for="Remarks"
+                      class="form-control">
+            </textarea>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+            Cancel
+        </button>
+
+        <button class="btn btn-success">
+            Save
+        </button>
+
+    </div>
+
+</form>

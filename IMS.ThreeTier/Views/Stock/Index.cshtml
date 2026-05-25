@@ -1,0 +1,241 @@
+﻿@model IMS.WEB.ViewModels.StockHistoryViewModel
+
+<style>
+    .modal-title {
+        word-break: break-word;
+        overflow-wrap: anywhere;
+        white-space: normal;
+        max-width: 90%;
+    }
+</style>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+
+    <h3>Inventory Operations</h3>
+
+    @if (User.IsInRole("Admin"))
+    {
+        <a class="btn btn-dark"
+           href="/Stock/History">
+
+            View Transaction History
+
+        </a>
+    }
+
+</div>
+
+<form method="get"
+      class="mb-3 d-flex gap-2">
+
+    <input type="text"
+           name="search"
+           value="@Model.Search"
+           class="form-control"
+           placeholder="Search products..." />
+
+    <button class="btn btn-primary">
+        Search
+    </button>
+
+    <a href="/Stock/Index"
+       class="btn btn-secondary">
+        Reset
+    </a>
+
+</form>
+
+<div class="table-responsive">
+
+    <table class="table table-bordered table-edit-grid">
+
+        <thead>
+
+            <tr>
+                <th>Product</th>
+                <th>Current Stock</th>
+                <th>Actions</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var item in Model.Products)
+            {
+                <tr>
+
+                    <td>@item.Name</td>
+
+                    <td>
+                        <span class="badge bg-info">
+                            @item.Quantity
+                        </span>
+                    </td>
+
+                    <td>
+
+                        <div class="d-flex gap-2">
+
+                            <button class="btn btn-success btn-sm stockInBtn"
+                                    data-id="@item.Id">
+                                Stock IN
+                            </button>
+
+                            <button class="btn btn-warning btn-sm stockOutBtn"
+                                    data-id="@item.Id">
+                                Stock OUT
+                            </button>
+
+                        </div>
+
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<nav>
+
+    <ul class="pagination">
+
+        @for (int i = 1; i <= Model.TotalPages; i++)
+        {
+            <li class="page-item @(i == Model.Page ? "active" : "")">
+
+                <a class="page-link"
+                   href="/Stock/Index?page=@i&pageSize=@Model.PageSize&search=@Model.Search">
+
+                    @i
+
+                </a>
+
+            </li>
+        }
+
+    </ul>
+
+</nav>
+
+<div class="modal fade"
+     id="stockModal"
+     tabindex="-1">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content"
+             id="stockModalContent">
+        </div>
+
+    </div>
+
+</div>
+
+@section Scripts {
+
+    <script>
+
+        $(".stockInBtn").click(function () {
+
+            let id = $(this).data("id");
+
+            $.get("/Stock/StockIn/" + id,
+                function (data) {
+
+                    $("#stockModalContent")
+                        .html(data);
+
+                    new bootstrap.Modal(
+                        document.getElementById('stockModal')
+                    ).show();
+
+                });
+
+        });
+
+        $(".stockOutBtn").click(function () {
+
+            let id = $(this).data("id");
+
+            $.get("/Stock/StockOut/" + id,
+                function (data) {
+
+                    $("#stockModalContent")
+                        .html(data);
+
+                    new bootstrap.Modal(
+                        document.getElementById('stockModal')
+                    ).show();
+
+                });
+
+        });
+
+        $(document).on("submit",
+            "#stockInForm",
+            function (e) {
+
+            e.preventDefault();
+
+            $.ajax({
+
+                url: "/Stock/StockIn",
+
+                type: "POST",
+
+                data: $(this).serialize(),
+
+                success: function () {
+
+                    location.reload();
+
+                },
+
+                error: function (xhr) {
+
+                    alert(xhr.responseText);
+
+                }
+
+            });
+
+        });
+
+        $(document).on("submit",
+            "#stockOutForm",
+            function (e) {
+
+            e.preventDefault();
+
+            $.ajax({
+
+                url: "/Stock/StockOut",
+
+                type: "POST",
+
+                data: $(this).serialize(),
+
+                success: function () {
+
+                    location.reload();
+
+                },
+
+                error: function (xhr) {
+
+                    alert(xhr.responseText);
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+}

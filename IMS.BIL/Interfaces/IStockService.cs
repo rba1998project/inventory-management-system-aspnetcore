@@ -11,6 +11,8 @@ namespace IMS.BLL.Interfaces
 
         Task AdjustStockAsync(StockAdjustmentDto dto, string username);
 
-        Task<List<StockTransaction>> GetTransactionHistoryAsync(int productId);
+        //Task<List<StockTransaction>> GetTransactionHistoryAsync(int productId);
+
+        Task<List<StockTransaction>> GetAllTransactionsAsync();
     }
 }
