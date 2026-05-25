@@ -12,12 +12,12 @@
     </a>
 
     <div class="d-flex gap-2">
-        <a href="/Stock/ExportExcel?search=@Model.Search"
+        <a href="/Stock/ExportExcel?search=@Model.Search&transactionType=@Model.TransactionType&createdBy=@Model.CreatedBy"
            class="btn btn-success">
             Export Excel
         </a>
 
-        <a href="/Stock/ExportPdf?search=@Model.Search"
+        <a href="/Stock/ExportPdf?search=@Model.Search&transactionType=@Model.TransactionType&createdBy=@Model.CreatedBy"
            class="btn btn-danger">
             Export PDF
         </a>
@@ -26,23 +26,43 @@
 </div>
 
 <form method="get"
-      class="mb-3 d-flex gap-2">
+      class="mb-3">
 
-    <input type="text"
-           name="search"
-           value="@Model.Search"
-           class="form-control"
-           placeholder="Search by product..." />
+    <div class="row g-2">
+        <div class="col-md-3">
+            <input type="text"
+                   name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Search by product..." />
+        </div>
 
-    <button class="btn btn-primary">
-        Search
-    </button>
+        <div class="col-md-2">
+            <select name="transactionType" class="form-select">
+                <option value="">-- All Types --</option>
+                <option value="IN" selected="@(Model.TransactionType == "IN")">IN</option>
+                <option value="OUT" selected="@(Model.TransactionType == "OUT")">OUT</option>
+                <option value="ADJUSTMENT" selected="@(Model.TransactionType == "ADJUSTMENT")">ADJUSTMENT</option>
+            </select>
+        </div>
 
-    <a href="/Stock/History"
-       class="btn btn-secondary">
-        Reset
-    </a>
+        <div class="col-md-2">
+            <select name="createdBy" class="form-select">
+                <option value="">-- All Users --</option>
+                @foreach (var user in Model.CreatedByUsers)
+                {
+                    <option value="@user" selected="@(Model.CreatedBy == user)">@user</option>
+                }
+            </select>
+        </div>
 
+        <div class="col-md-5">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                <a href="/Stock/History" class="btn btn-secondary">Reset</a>
+            </div>
+        </div>
+    </div>
 </form>
 
 <div class="table-responsive">
@@ -135,7 +155,7 @@
             <li class="page-item @(i == Model.Page ? "active" : "")">
 
                 <a class="page-link"
-                   href="/Stock/History?page=@i&pageSize=@Model.PageSize&search=@Model.Search">
+                   href="/Stock/History?page=@i&pageSize=@Model.PageSize&search=@Model.Search&transactionType=@Model.TransactionType&createdBy=@Model.CreatedBy">
 
                     @i
 

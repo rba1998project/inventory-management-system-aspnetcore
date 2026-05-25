@@ -14,7 +14,7 @@ namespace IMS.DAL.Repositories
             _context = context;
         }
 
-        public async Task<(List<Product> Items, int TotalCount)> GetPagedAsync(int page, int pageSize, string search)
+        public async Task<(List<Product> Items, int TotalCount)> GetPagedAsync(int page, int pageSize, string search, int? categoryId = null, int? supplierId = null)
         {
             var query = _context.Products
                 .Where(p => !p.IsDeleted);
@@ -22,6 +22,16 @@ namespace IMS.DAL.Repositories
             if (!string.IsNullOrWhiteSpace(search))
             {
                 query = query.Where(p => p.Name.Contains(search));
+            }
+
+            if (categoryId.HasValue)
+            {
+                query = query.Where(p => p.CategoryId == categoryId.Value);
+            }
+
+            if (supplierId.HasValue)
+            {
+                query = query.Where(p => p.SupplierId == supplierId.Value);
             }
 
             var totalCount = await query.CountAsync();

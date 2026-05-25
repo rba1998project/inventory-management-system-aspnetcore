@@ -19,25 +19,50 @@ namespace IMS.DAL.Repositories
             await _context.StockTransactions.AddAsync(transaction);
         }
 
-        //public async Task<List<StockTransaction>> GetTransactionsByProductIdAsync(int productId)
-        //{
-        //    return await _context.StockTransactions
-        //        .Include(st => st.Product)
-        //        .Where(st => st.ProductId == productId)
-        //        .OrderByDescending(st => st.CreatedAt)
-        //        .ToListAsync();
-        //}
-
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<StockTransaction>> GetAllTransactionsAsync()
+        public async Task<(List<StockTransaction> Items, int TotalCount)> GetPagedTransactionsAsync(int page, int pageSize, string search = "", string transactionType = "", string createdBy = "")
+        {
+            IQueryable<StockTransaction> query = _context.StockTransactions.Include(s => s.Product);
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                query = query.Where(t => t.Product.Name.Contains(search));
+            }
+
+            if (!string.IsNullOrWhiteSpace(transactionType))
+            {
+                if (Enum.TryParse<Models.Enums.TransactionType>(transactionType, out var enumValue))
+                {
+                    query = query.Where(t => t.TransactionType == enumValue);
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(createdBy))
+            {
+                query = query.Where(t => t.CreatedBy == createdBy);
+            }
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .OrderByDescending(t => t.CreatedAt)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
+
+        public async Task<List<string>> GetDistinctCreatedByAsync()
         {
             return await _context.StockTransactions
-                .Include(s => s.Product)
-                .OrderByDescending(s => s.CreatedAt)
+                .Select(t => t.CreatedBy)
+                .Distinct()
+                .OrderBy(cb => cb)
                 .ToListAsync();
         }
     }

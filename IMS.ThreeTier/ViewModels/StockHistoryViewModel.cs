@@ -13,5 +13,11 @@
         public int TotalPages { get; set; }
 
         public string Search { get; set; } = string.Empty;
+
+        public string TransactionType { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public List<string> CreatedByUsers { get; set; } = new();
     }
 }

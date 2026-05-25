@@ -38,20 +38,47 @@
     </button>
 </div>
 
-<form method="get" class="mb-3 d-flex gap-2">
+<form method="get" class="mb-3">
+    <div class="row g-2">
+        <div class="col-md-3">
+            <input type="text"
+                   name="search"
+                   value="@Model.Search"
+                   class="form-control"
+                   placeholder="Search products..." />
+        </div>
 
-    <input type="text"
-           name="search"
-           value="@Model.Search"
-           class="form-control"
-           placeholder="Search products..." />
+        <div class="col-md-3">
+            <select name="categoryId" class="form-select">
+                <option value="">-- All Categories --</option>
+                @foreach (var cat in Model.Categories)
+                {
+                    <option value="@cat.Id" selected="@(cat.Id == Model.CategoryId)">
+                        @cat.Name
+                    </option>
+                }
+            </select>
+        </div>
 
-    <button class="btn btn-primary">Search</button>
+        <div class="col-md-3">
+            <select name="supplierId" class="form-select">
+                <option value="">-- All Suppliers --</option>
+                @foreach (var sup in Model.Suppliers)
+                {
+                    <option value="@sup.Id" selected="@(sup.Id == Model.SupplierId)">
+                        @sup.Name
+                    </option>
+                }
+            </select>
+        </div>
 
-    <a href="/Product/Index" class="btn btn-secondary">
-        Reset
-    </a>
-
+        <div class="col-md-3">
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary flex-grow-1">Filter</button>
+                <a href="/Product/Index" class="btn btn-secondary">Reset</a>
+            </div>
+        </div>
+    </div>
 </form>
 
 <div class="table-responsive">
@@ -183,7 +210,7 @@
             <li class="page-item @(i == Model.Page ? "active" : "")">
 
                 <a class="page-link"
-                   href="/Product/Index?page=@i&pageSize=@Model.PageSize&search=@Model.Search">
+                   href="/Product/Index?page=@i&pageSize=@Model.PageSize&search=@Model.Search&categoryId=@Model.CategoryId&supplierId=@Model.SupplierId">
                     @i
                 </a>
 

@@ -4,7 +4,7 @@ namespace IMS.BLL.Interfaces
 {
     public interface IProductService
     {
-        Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize, string search);
+        Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize, string search, int? categoryId = null, int? supplierId = null);
 
         Task<List<ProductDto>> GetAllAsync();
 

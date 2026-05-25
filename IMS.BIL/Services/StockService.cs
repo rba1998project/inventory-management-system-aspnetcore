@@ -114,14 +114,14 @@ namespace IMS.BLL.Services
             await _stockRepository.SaveChangesAsync();
         }
 
-        //public async Task<List<StockTransaction>> GetTransactionHistoryAsync(int productId)
-        //{
-        //    return await _stockRepository.GetTransactionsByProductIdAsync(productId);
-        //}
-
-        public async Task<List<StockTransaction>> GetAllTransactionsAsync()
+        public async Task<(List<StockTransaction> Items, int TotalCount)> GetPagedTransactionsAsync(int page, int pageSize, string search = "", string transactionType = "", string createdBy = "")
         {
-            return await _stockRepository.GetAllTransactionsAsync();
+            return await _stockRepository.GetPagedTransactionsAsync(page, pageSize, search, transactionType, createdBy);
+        }
+
+        public async Task<List<string>> GetDistinctCreatedByAsync()
+        {
+            return await _stockRepository.GetDistinctCreatedByAsync();
         }
     }
 }

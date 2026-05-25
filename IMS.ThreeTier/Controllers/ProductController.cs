@@ -24,9 +24,9 @@ namespace IMS.WEB.Controllers
         }
 
         [Authorize(Roles = "Admin,InventoryManager")]
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 5, string search = "")
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 5, string search = "", int? categoryId = null, int? supplierId = null)
         {
-            var result = await _service.GetPagedAsync(page, pageSize, search);
+            var result = await _service.GetPagedAsync(page, pageSize, search, categoryId, supplierId);
 
             var categories = await _categoryService.GetAllAsync();
             var suppliers = await _supplierService.GetAllAsync();
@@ -55,7 +55,9 @@ namespace IMS.WEB.Controllers
                 Page = result.Page,
                 PageSize = result.PageSize,
                 TotalPages = result.TotalPages,
-                Search = search
+                Search = search,
+                CategoryId = categoryId,
+                SupplierId = supplierId
             };
 
             return View(vm);

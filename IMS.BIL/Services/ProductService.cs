@@ -14,9 +14,9 @@ namespace IMS.BLL.Services
             _repo = repo;
         }
 
-        public async Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize, string search)
+        public async Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize, string search, int? categoryId = null, int? supplierId = null)
         {
-            var (items, totalCount) = await _repo.GetPagedAsync(page, pageSize, search);
+            var (items, totalCount) = await _repo.GetPagedAsync(page, pageSize, search, categoryId, supplierId);
 
             return new PagedResult<ProductDto>
             {

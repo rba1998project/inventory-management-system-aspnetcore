@@ -4,7 +4,7 @@ namespace IMS.DAL.Interfaces
 {
     public interface IProductRepository
     {
-        Task<(List<Product> Items, int TotalCount)> GetPagedAsync(int page, int pageSize, string search);
+        Task<(List<Product> Items, int TotalCount)> GetPagedAsync(int page, int pageSize, string search, int? categoryId = null, int? supplierId = null);
 
         Task<List<Product>> GetAllAsync();
 

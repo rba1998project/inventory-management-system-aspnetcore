@@ -6,9 +6,10 @@ namespace IMS.DAL.Interfaces
     {
         Task AddTransactionAsync(StockTransaction transaction);
 
-        //Task<List<StockTransaction>> GetTransactionsByProductIdAsync(int productId);
-
         Task SaveChangesAsync();
-        Task<List<StockTransaction>> GetAllTransactionsAsync();
+
+        Task<(List<StockTransaction> Items, int TotalCount)> GetPagedTransactionsAsync(int page, int pageSize, string search = "", string transactionType = "", string createdBy = "");
+
+        Task<List<string>> GetDistinctCreatedByAsync();
     }
 }

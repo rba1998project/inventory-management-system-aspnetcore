@@ -54,30 +54,18 @@ namespace IMS.WEB.Controllers
         public async Task<IActionResult> History(
             int page = 1,
             int pageSize = 10,
-            string search = "")
+            string search = "",
+            string transactionType = "",
+            string createdBy = "")
         {
-            var transactions = await _stockService
-                .GetAllTransactionsAsync();
+            var (transactions, totalCount) = await _stockService
+                .GetPagedTransactionsAsync(page, pageSize, search, transactionType, createdBy);
 
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                transactions = transactions
-                    .Where(t => t.Product.Name
-                    .Contains(search,
-                    StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            }
-
-            var totalCount = transactions.Count;
-
-            var paged = transactions
-                .Skip((page - 1) * pageSize)
-                .Take(pageSize)
-                .ToList();
+            var users = await _stockService.GetDistinctCreatedByAsync();
 
             var vm = new StockHistoryViewModel
             {
-                Transactions = paged.Select(t =>
+                Transactions = transactions.Select(t =>
                     new StockTransactionViewModel
                     {
                         Id = t.Id,
@@ -96,7 +84,10 @@ namespace IMS.WEB.Controllers
                 TotalPages = (int)Math.Ceiling(
                     totalCount / (double)pageSize),
 
-                Search = search
+                Search = search,
+                TransactionType = transactionType,
+                CreatedBy = createdBy,
+                CreatedByUsers = users
             };
 
             return View(vm);
@@ -188,19 +179,10 @@ namespace IMS.WEB.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ExportExcel(string search = "")
+        public async Task<IActionResult> ExportExcel(string search = "", string transactionType = "", string createdBy = "")
         {
-            var transactions = await _stockService
-                .GetAllTransactionsAsync();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                transactions = transactions
-                    .Where(t => t.Product.Name
-                    .Contains(search,
-                    StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            }
+            var (transactions, _) = await _stockService
+                .GetPagedTransactionsAsync(1, int.MaxValue, search, transactionType, createdBy);
 
             using var workbook = new XLWorkbook();
 
@@ -268,19 +250,10 @@ namespace IMS.WEB.Controllers
         }
 
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> ExportPdf(string search = "")
+        public async Task<IActionResult> ExportPdf(string search = "", string transactionType = "", string createdBy = "")
         {
-            var transactions = await _stockService
-                .GetAllTransactionsAsync();
-
-            if (!string.IsNullOrWhiteSpace(search))
-            {
-                transactions = transactions
-                    .Where(t => t.Product.Name
-                    .Contains(search,
-                    StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-            }
+            var (transactions, _) = await _stockService
+                .GetPagedTransactionsAsync(1, int.MaxValue, search, transactionType, createdBy);
 
             return new ViewAsPdf(
                 "ExportPdf",

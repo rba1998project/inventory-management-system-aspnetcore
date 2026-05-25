@@ -17,5 +17,9 @@ namespace IMS.WEB.ViewModels
         public int TotalPages { get; set; }
 
         public string Search { get; set; }
+
+        public int? CategoryId { get; set; }
+
+        public int? SupplierId { get; set; }
     }
 }
