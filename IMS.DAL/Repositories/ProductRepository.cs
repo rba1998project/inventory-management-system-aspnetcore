@@ -39,7 +39,7 @@ namespace IMS.DAL.Repositories
             var items = await query
                 .Include(p => p.Category)
                 .Include(p => p.Supplier)
-                .OrderByDescending(p => p.Id)
+                .OrderBy(p => p.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -53,6 +53,7 @@ namespace IMS.DAL.Repositories
                 .Where(p => !p.IsDeleted)
                 .Include(p => p.Category)
                 .Include(p => p.Supplier)
+                .OrderBy(p => p.Name)
                 .ToListAsync();
         }
 

@@ -28,7 +28,7 @@ namespace IMS.DAL.Repositories
 
             var items = await query
                 .Include(s => s.Products.Where(p => !p.IsDeleted))
-                .OrderByDescending(s => s.Id)
+                .OrderBy(s => s.Name)
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();
@@ -41,6 +41,7 @@ namespace IMS.DAL.Repositories
             return await _context.Suppliers
                 .Where(s => !s.IsDeleted)
                 .Include(s => s.Products)
+                .OrderBy(s => s.Name)
                 .ToListAsync();
         }
 
