@@ -81,9 +81,9 @@
 
                     @if (User.IsInRole("Admin"))
                     {
-                        <td class="audit-cell">@item.CreatedAt</td>
+                        <td class="audit-cell">@(item.CreatedAt.ToUiDate())</td>
                         <td class="audit-cell">@item.CreatedBy</td>
-                        <td class="audit-cell">@item.LastModifiedAt</td>
+                        <td class="audit-cell">@(item.LastModifiedAt.ToUiDate())</td>
                         <td class="audit-cell">@item.LastModifiedBy</td>
                     }
 

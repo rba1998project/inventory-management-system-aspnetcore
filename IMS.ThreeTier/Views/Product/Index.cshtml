@@ -131,7 +131,7 @@
                     @if (User.IsInRole("Admin"))
                     {
                         <td class="audit-cell">
-                            @item.CreatedAt.ToString("yyyy-MM-dd HH:mm")
+                            @(item.CreatedAt.ToUiDate())
                         </td>
 
                         <td class="audit-cell">
@@ -139,7 +139,7 @@
                         </td>
 
                         <td class="audit-cell audit-updated">
-                            @item.LastModifiedAt
+                            @(item.LastModifiedAt.ToUiDate())
                         </td>
 
                         <td class="audit-cell audit-updatedby">
