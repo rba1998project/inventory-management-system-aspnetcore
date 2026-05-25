@@ -11,9 +11,11 @@ namespace IMS.WEB.ViewModels
         public decimal Price { get; set; }
 
         [Required]
+        [Display(Name = "Category")]
         public int CategoryId { get; set; }
 
         [Required]
+        [Display(Name = "Supplier")]
         public int SupplierId { get; set; }
     }
 }
