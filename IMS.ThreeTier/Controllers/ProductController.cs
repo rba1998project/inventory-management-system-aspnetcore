@@ -63,6 +63,22 @@ namespace IMS.WEB.Controllers
             return View(vm);
         }
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> LowStock(int page = 1, int pageSize = 10)
+        {
+            var result = await _service.GetLowStockProductsAsync(page, pageSize);
+
+            var vm = new LowStockViewModel
+            {
+                Products = result.Items.ToList(),
+                Page = result.Page,
+                PageSize = result.PageSize,
+                TotalPages = result.TotalPages
+            };
+
+            return View(vm);
+        }
+
         [HttpGet]
         [Authorize(Roles = "Admin,InventoryManager")]
         public async Task<IActionResult> Create()

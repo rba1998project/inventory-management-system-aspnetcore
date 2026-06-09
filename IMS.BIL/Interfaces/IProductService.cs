@@ -10,6 +10,12 @@ namespace IMS.BLL.Interfaces
 
         Task<ProductDto> GetByIdAsync(int id);
 
+        Task<PagedResult<ProductDto>> GetLowStockProductsAsync(int page, int pageSize);
+
+        Task<int> GetLowStockCountAsync();
+
+        Task<decimal> GetTotalInventoryValueAsync();
+
         Task CreateAsync(ProductDto dto, string user);
 
         Task UpdateAsync(ProductDto dto, string user);

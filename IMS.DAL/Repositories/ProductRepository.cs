@@ -65,6 +65,38 @@ namespace IMS.DAL.Repositories
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public async Task<(List<Product> Items, int TotalCount)> GetLowStockProductsAsync(int page, int pageSize)
+        {
+            var query = _context.Products
+                .Where(p => !p.IsDeleted && p.Quantity <= p.LowStockThreshold);
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Include(p => p.Category)
+                .Include(p => p.Supplier)
+                .OrderBy(p => p.Name)
+                .Skip((page - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
+
+        public async Task<int> GetLowStockCountAsync()
+        {
+            return await _context.Products
+                .Where(p => !p.IsDeleted && p.Quantity <= p.LowStockThreshold)
+                .CountAsync();
+        }
+
+        public async Task<decimal> GetTotalInventoryValueAsync()
+        {
+            return await _context.Products
+                .Where(p => !p.IsDeleted)
+                .SumAsync(p => p.Price * p.Quantity);
+        }
+
         public async Task AddAsync(Product product)
         {
             await _context.Products.AddAsync(product);

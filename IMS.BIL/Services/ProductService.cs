@@ -26,6 +26,7 @@ namespace IMS.BLL.Services
                     Name = p.Name,
                     Price = p.Price,
                     Quantity = p.Quantity,
+                    LowStockThreshold = p.LowStockThreshold,
                     CategoryId = p.CategoryId,
                     SupplierId = p.SupplierId,
                     CategoryName = p.Category?.Name,
@@ -53,6 +54,7 @@ namespace IMS.BLL.Services
                 Name = p.Name,
                 Price = p.Price,
                 Quantity = p.Quantity,
+                LowStockThreshold = p.LowStockThreshold,
                 CategoryId = p.CategoryId,
                 SupplierId = p.SupplierId,
                 CategoryName = p.Category?.Name,
@@ -73,6 +75,7 @@ namespace IMS.BLL.Services
                 Name = p.Name,
                 Price = p.Price,
                 Quantity = p.Quantity,
+                LowStockThreshold = p.LowStockThreshold,
                 CategoryId = p.CategoryId,
                 SupplierId = p.SupplierId,
                 CategoryName = p.Category?.Name,
@@ -85,13 +88,54 @@ namespace IMS.BLL.Services
             };
         }
 
+        public async Task<PagedResult<ProductDto>> GetLowStockProductsAsync(int page, int pageSize)
+        {
+            var (items, totalCount) = await _repo.GetLowStockProductsAsync(page, pageSize);
+
+            return new PagedResult<ProductDto>
+            {
+                Items = items.Select(p => new ProductDto
+                {
+                    Id = p.Id,
+                    Name = p.Name,
+                    Price = p.Price,
+                    Quantity = p.Quantity,
+                    LowStockThreshold = p.LowStockThreshold,
+                    CategoryId = p.CategoryId,
+                    SupplierId = p.SupplierId,
+                    CategoryName = p.Category?.Name,
+                    SupplierName = p.Supplier?.Name,
+                    ImagePath = p.ImagePath,
+                    CreatedAt = p.CreatedAt,
+                    CreatedBy = p.CreatedBy,
+                    LastModifiedAt = p.LastModifiedAt,
+                    LastModifiedBy = p.LastModifiedBy
+                }).ToList(),
+
+                TotalCount = totalCount,
+                Page = page,
+                PageSize = pageSize
+            };
+        }
+
+        public async Task<int> GetLowStockCountAsync()
+        {
+            return await _repo.GetLowStockCountAsync();
+        }
+
+        public async Task<decimal> GetTotalInventoryValueAsync()
+        {
+            return await _repo.GetTotalInventoryValueAsync();
+        }
+
         public async Task CreateAsync(ProductDto dto, string user)
         {
             var product = new Product
             {
                 Name = dto.Name,
                 Price = Math.Round(dto.Price, 2),
-                Quantity = 0, 
+                Quantity = 0,
+                LowStockThreshold = dto.LowStockThreshold,
                 CategoryId = dto.CategoryId,
                 SupplierId = dto.SupplierId,
                 ImagePath = dto.ImagePath,
@@ -108,6 +152,7 @@ namespace IMS.BLL.Services
 
             product.Name = dto.Name;
             product.Price = Math.Round(dto.Price, 2);
+            product.LowStockThreshold = dto.LowStockThreshold;
             product.CategoryId = dto.CategoryId;
             product.SupplierId = dto.SupplierId;
             product.ImagePath = dto.ImagePath;

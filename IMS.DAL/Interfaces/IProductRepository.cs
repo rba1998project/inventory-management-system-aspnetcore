@@ -10,6 +10,12 @@ namespace IMS.DAL.Interfaces
 
         Task<Product?> GetByIdAsync(int id);
 
+        Task<(List<Product> Items, int TotalCount)> GetLowStockProductsAsync(int page, int pageSize);
+
+        Task<int> GetLowStockCountAsync();
+
+        Task<decimal> GetTotalInventoryValueAsync();
+
         Task AddAsync(Product product);
 
         Task UpdateAsync(Product product);

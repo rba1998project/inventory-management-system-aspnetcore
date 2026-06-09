@@ -19,6 +19,9 @@ namespace IMS.Models
         [Range(0, int.MaxValue)]
         public int Quantity { get; set; } = 0;
 
+        [Range(0, int.MaxValue)]
+        public int LowStockThreshold { get; set; } = 0;
+
         // FK → Category
         [Required]
         public int CategoryId { get; set; }
