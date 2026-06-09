@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var currentController = ViewContext.RouteData.Values["Controller"]?.ToString();
+    var currentAction = ViewContext.RouteData.Values["Action"]?.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -36,7 +41,7 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link @(currentController == "Dashboard" && currentAction == "Index" ? "active fw-bold" : "")"
                                        asp-controller="Dashboard"
                                        asp-action="Index">
                                         <i class="bi bi-speedometer2"></i> Dashboard
@@ -45,7 +50,7 @@
                             }
 
                             <li class="nav-item">
-                                <a class="nav-link"
+                                <a class="nav-link @(currentController == "Product" && currentAction == "Index" ? "active fw-bold" : "")""
                                    asp-controller="Product"
                                    asp-action="Index">
                                     <i class="bi bi-box"></i> Products
@@ -53,7 +58,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link"
+                                <a class="nav-link @(currentController == "Category" && currentAction == "Index" ? "active fw-bold" : "")"
                                    asp-controller="Category"
                                    asp-action="Index">
                                     <i class="bi bi-list"></i> Categories
@@ -61,7 +66,7 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link"
+                                <a class="nav-link @(currentController == "Supplier" && currentAction == "Index" ? "active fw-bold" : "")"
                                    asp-controller="Supplier"
                                    asp-action="Index">
                                     <i class="bi bi-truck"></i> Suppliers
@@ -71,7 +76,7 @@
                             @if (User.IsInRole("Admin"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link @(currentController == "UserManagement" && currentAction == "Index" ? "active fw-bold" : "")"
                                        asp-controller="UserManagement"
                                        asp-action="Index">
                                         <i class="bi bi-people"></i> Users
@@ -79,7 +84,7 @@
                                 </li>
 
                                 <li class="nav-item">
-                                    <a class="nav-link"
+                                    <a class="nav-link @(currentController == "Product" && currentAction == "LowStock" ? "active fw-bold" : "")"
                                        asp-controller="Product"
                                        asp-action="LowStock">
                                         <i class="bi bi-exclamation-triangle"></i> Low Stock
@@ -88,7 +93,7 @@
                             }
 
                             <li class="nav-item">
-                                <a class="nav-link"
+                                <a class="nav-link @(currentController == "Stock" && (currentAction == "Index" || currentAction == "History") ? "active fw-bold" : "")"
                                    asp-controller="Stock"
                                    asp-action="Index">
                                     <i class="bi bi-graph-up"></i> Inventory

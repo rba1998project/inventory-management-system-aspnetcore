@@ -87,3 +87,12 @@ DIRTY ROW
     color: #666;
 }
 
+
+/* =========================
+   NAVBAR ACTIVE LINK
+========================= */
+.navbar .nav-link.active {
+    color: #ffc107 !important;
+    font-weight: 600;
+    border-bottom: 2px solid #ffc107;
+}
