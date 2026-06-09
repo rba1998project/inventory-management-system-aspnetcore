@@ -1,0 +1,99 @@
+﻿@model IMS.WEB.ViewModels.StockAdjustmentViewModel
+
+<div class="modal-header">
+
+    <h5 class="modal-title">
+        Stock Adjustment - @ViewBag.ProductName
+    </h5>
+
+    <button type="button"
+            class="btn-close"
+            data-bs-dismiss="modal">
+    </button>
+
+</div>
+
+<form id="adjustStockForm">
+
+    <div class="modal-body">
+
+        <input type="hidden"
+               asp-for="ProductId" />
+
+        <div class="alert alert-info">
+
+            Current Stock:
+            <strong>@ViewBag.CurrentStock</strong>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                New Quantity
+            </label>
+
+            <input asp-for="NewQuantity"
+                   type="number"
+                   min="0"
+                   class="form-control" />
+
+            <span asp-validation-for="NewQuantity"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Adjustment Reason <span class="text-danger">*</span>
+            </label>
+
+            <textarea asp-for="Remarks"
+                      class="form-control"
+                      rows="3"
+                      placeholder="Enter adjustment reason">
+            </textarea>
+
+            <span asp-validation-for="Remarks"
+                  class="text-danger">
+            </span>
+
+        </div>
+
+        <div class="alert alert-info">
+
+            <strong>Example:</strong>
+
+            <ul class="mb-0 mt-2">
+                <li>Damaged Items</li>
+                <li>Physical Stock Count Correction</li>
+                <li>Lost Inventory</li>
+                <li>Inventory Reconciliation</li>
+            </ul>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+
+            Cancel
+
+        </button>
+
+        <button type="submit"
+                class="btn btn-warning">
+            Save Adjustment
+        </button>
+
+    </div>
+
+</form>
+
+<partial name="_ValidationScriptsPartial" />

@@ -98,14 +98,16 @@
 
                             @if (item.TransactionType == "IN")
                             {
-                                <span class="badge bg-success">
-                                    IN
-                                </span>
+                                <span class="badge bg-success">IN</span>
+                            }
+                            else if (item.TransactionType == "OUT")
+                            {
+                                <span class="badge bg-danger">OUT</span>
                             }
                             else
                             {
-                                <span class="badge bg-danger">
-                                    OUT
+                                <span class="badge bg-warning text-dark">
+                                    ADJUSTMENT
                                 </span>
                             }
 

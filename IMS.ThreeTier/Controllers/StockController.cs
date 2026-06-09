@@ -178,6 +178,49 @@ namespace IMS.WEB.Controllers
             });
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Adjust(int id)
+        {
+            var product = await _productService.GetByIdAsync(id);
+
+            if (product == null)
+                return NotFound();
+
+            var vm = new StockAdjustmentViewModel
+            {
+                ProductId = product.Id,
+                NewQuantity = product.Quantity
+            };
+
+            ViewBag.ProductName = product.Name;
+            ViewBag.CurrentStock = product.Quantity;
+
+            return PartialView("_AdjustStockModal", vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Adjust(StockAdjustmentViewModel vm)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest("Invalid adjustment.");
+
+            var dto = new StockAdjustmentDto
+            {
+                ProductId = vm.ProductId,
+                NewQuantity = vm.NewQuantity,
+                Remarks = vm.Remarks
+            };
+
+            await _stockService.AdjustStockAsync(
+                dto,
+                User.Identity.Name);
+
+            return Json(new
+            {
+                success = true
+            });
+        }
+
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ExportExcel(string search = "", string transactionType = "", string createdBy = "")
         {

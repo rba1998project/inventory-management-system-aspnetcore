@@ -82,9 +82,14 @@
                                 Stock IN
                             </button>
 
-                            <button class="btn btn-warning btn-sm stockOutBtn"
+                            <button class="btn btn-danger btn-sm stockOutBtn"
                                     data-id="@item.Id">
                                 Stock OUT
+                            </button>
+
+                            <button class="btn btn-warning btn-sm adjustStockBtn"
+                                    data-id="@item.Id">
+                                Adjust
                             </button>
 
                         </div>
@@ -176,6 +181,22 @@
 
         });
 
+        $(".adjustStockBtn").click(function () {
+
+            let id = $(this).data("id");
+
+            $.get("/Stock/Adjust/" + id,
+                function (data) {
+
+                    $("#stockModalContent")
+                        .html(data);
+
+                    new bootstrap.Modal(
+                        document.getElementById('stockModal')
+                    ).show();
+                });
+        });
+
         $(document).on("submit",
             "#stockInForm",
             function (e) {
@@ -234,6 +255,36 @@
 
             });
 
+        });
+
+        $(document).on("submit",
+            "#adjustStockForm",
+            function (e) {
+
+            e.preventDefault();
+
+
+            $.ajax({
+
+                url: "/Stock/Adjust",
+
+                type: "POST",
+
+                data: $(this).serialize(),
+
+                success: function () {
+
+                    location.reload();
+
+                },
+
+                error: function (xhr) {
+
+                    alert(xhr.responseText);
+
+                }
+
+            });
         });
 
     </script>

@@ -1,4 +1,6 @@
-﻿namespace IMS.BLL.DTOs
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IMS.BLL.DTOs
 {
     public class StockAdjustmentDto
     {
@@ -6,6 +8,8 @@
 
         public int NewQuantity { get; set; }
 
+        [Required(ErrorMessage = "Reason is required.")]
+        [StringLength(500)]
         public string? Remarks { get; set; }
     }
 }

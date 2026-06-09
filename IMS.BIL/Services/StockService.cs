@@ -99,7 +99,7 @@ namespace IMS.BLL.Services
             {
                 ProductId = product.Id,
                 TransactionType = TransactionType.ADJUSTMENT,
-                Quantity = dto.NewQuantity,
+                Quantity = dto.NewQuantity - previousQuantity,
                 PreviousQuantity = previousQuantity,
                 NewQuantity = dto.NewQuantity,
                 Remarks = dto.Remarks,
