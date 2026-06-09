@@ -33,11 +33,30 @@
                     <ul class="navbar-nav me-auto">
                         @if (User.Identity!.IsAuthenticated)
                         {
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Dashboard"
+                                       asp-action="Index">
+                                        <i class="bi bi-speedometer2"></i> Dashboard
+                                    </a>
+                                </li>
+                            }
+
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   asp-controller="Product"
+                                   asp-action="Index">
+                                    <i class="bi bi-box"></i> Products
+                                </a>
+                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link"
                                    asp-controller="Category"
                                    asp-action="Index">
-                                    Categories
+                                    <i class="bi bi-list"></i> Categories
                                 </a>
                             </li>
 
@@ -45,27 +64,36 @@
                                 <a class="nav-link"
                                    asp-controller="Supplier"
                                    asp-action="Index">
-                                    Suppliers
+                                    <i class="bi bi-truck"></i> Suppliers
                                 </a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link"
-                                   asp-controller="Product"
-                                   asp-action="Index">
-                                    Products
-                                </a>
-                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="UserManagement"
+                                       asp-action="Index">
+                                        <i class="bi bi-people"></i> Users
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link"
+                                       asp-controller="Product"
+                                       asp-action="LowStock">
+                                        <i class="bi bi-exclamation-triangle"></i> Low Stock
+                                    </a>
+                                </li>
+                            }
 
                             <li class="nav-item">
                                 <a class="nav-link"
                                    asp-controller="Stock"
                                    asp-action="Index">
-                                    Inventory
+                                    <i class="bi bi-graph-up"></i> Inventory
                                 </a>
                             </li>
-
-
                         }
                     </ul>
 
