@@ -40,7 +40,10 @@ namespace IMS.BLL.Services
             return result;
         }
 
-        public async Task<IdentityResult>  UserCreateAsync(UserCreateDto dto)
+        public async Task<ApplicationUser> GetUserByEmailAsync(string email)
+        {
+            return await _userManager.FindByEmailAsync(email);
+        }
         {
             var user = new ApplicationUser
             {

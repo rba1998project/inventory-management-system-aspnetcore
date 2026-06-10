@@ -38,6 +38,15 @@ namespace IMS.WEB.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
+            var existingUser = await _service.GetUserByEmailAsync(model.Email);
+
+            if (existingUser != null)
+            {
+                ModelState.AddModelError("", "User with this email already exists.");
+                ViewBag.Roles = await _service.GetAllRolesAsync();
+                return View(model);
+            }
+
             var dto = new UserCreateDto
             {
                 Email = model.Email,

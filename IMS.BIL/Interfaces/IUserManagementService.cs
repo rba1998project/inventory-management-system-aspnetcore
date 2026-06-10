@@ -12,7 +12,7 @@ namespace IMS.BLL.Interfaces
 
         Task<Dictionary<string, string>> GetUserRolesMapAsync(List<ApplicationUser> users);
 
-        Task<IdentityResult>  UserCreateAsync(UserCreateDto dto);
+        Task<ApplicationUser> GetUserByEmailAsync(string email);
 
         Task<IdentityResult> UpdateUserRoleAsync(string userId, string role);
 
