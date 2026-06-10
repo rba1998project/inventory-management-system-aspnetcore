@@ -14,23 +14,25 @@
 <form asp-action="Create" method="post">
 
     <div class="form-group">
-        <label>Email</label>
+        <label>Email</label> <span class="text-danger">*</span>
         <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label>Password</label>
+        <label>Password</label> <span class="text-danger">*</span>
         <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label>Retype Password</label>
+        <label>Retype Password</label> <span class="text-danger">*</span>
         <input asp-for="ConfirmPassword" type="password" class="form-control" />
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
 
     <div class="form-group">
-        <label>Role</label>
+        <label>Role</label> <span class="text-danger">*</span>
         <select asp-for="Role" class="form-control"
                 asp-items="@(new SelectList(ViewBag.Roles))">
         </select>

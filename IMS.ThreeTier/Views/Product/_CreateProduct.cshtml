@@ -13,19 +13,19 @@
     <div class="modal-body">
 
         <div class="mb-3">
-            <label asp-for="Name" class="form-label"></label>
+            <label asp-for="Name" class="form-label"></label> <span class="text-danger">*</span>
             <input asp-for="Name" class="form-control" />
             <span asp-validation-for="Name" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="Price" class="form-label"></label>
+            <label asp-for="Price" class="form-label"></label> <span class="text-danger">*</span>
             <input asp-for="Price" class="form-control" />
             <span asp-validation-for="Price" class="text-danger"></span>
         </div>
 
         <div class="mb-3">
-            <label asp-for="CategoryId" class="form-label"></label>
+            <label asp-for="CategoryId" class="form-label"></label> <span class="text-danger">*</span>
             <select asp-for="CategoryId" class="form-control">
                 <option value="">-- Select Category --</option>
                 @foreach (var cat in ViewBag.Categories)
@@ -37,7 +37,7 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="SupplierId" class="form-label"></label>
+            <label asp-for="SupplierId" class="form-label"></label> <span class="text-danger">*</span>
             <select asp-for="SupplierId" class="form-control">
                 <option value="">-- Select Supplier --</option>
                 @foreach (var sup in ViewBag.Suppliers)
@@ -49,7 +49,7 @@
         </div>
 
         <div class="mb-3">
-            <label asp-for="LowStockThreshold" class="form-label"></label>
+            <label asp-for="LowStockThreshold" class="form-label"></label> <span class="text-danger">*</span>
             <input asp-for="LowStockThreshold" class="form-control" type="number" min="0" value="1" />
             <span asp-validation-for="LowStockThreshold" class="text-danger"></span>
         </div>

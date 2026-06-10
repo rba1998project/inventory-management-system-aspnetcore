@@ -7,6 +7,7 @@ namespace IMS.WEB.ViewModels
         [Required(ErrorMessage = "Supplier name is required.")]
         public string Name { get; set; }
 
+        [Display(Name ="Contact Person")]
         public string? ContactPerson { get; set; }
 
         [EmailAddress]
