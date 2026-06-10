@@ -1,6 +1,15 @@
-﻿@model IMS.WEB.ViewModels.CreateUserViewModel
+﻿@model  CreateUserViewModel
+
+@{
+    ViewData["Title"] = "Create User";
+}
 
 <h2>Create User</h2>
+<a asp-controller="UserManagement"
+   asp-action="Index"
+   class="btn btn-secondary">
+    ← Back
+</a>
 
 <form asp-action="Create" method="post">
 
