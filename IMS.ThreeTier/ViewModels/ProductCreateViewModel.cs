@@ -17,5 +17,9 @@ namespace IMS.WEB.ViewModels
         [Required]
         [Display(Name = "Supplier")]
         public int SupplierId { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Low Stock Threshold must be a positive number")]
+        [Display(Name = "Low Stock Threshold")]
+        public int LowStockThreshold { get; set; } = 1;
     }
 }

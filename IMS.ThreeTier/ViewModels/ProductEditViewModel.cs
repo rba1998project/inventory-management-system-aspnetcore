@@ -1,4 +1,6 @@
-﻿namespace IMS.WEB.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace IMS.WEB.ViewModels
 {
     public class ProductEditViewModel
     {
@@ -11,5 +13,8 @@
         public int CategoryId { get; set; }
 
         public int SupplierId { get; set; }
+
+        [Range(0, int.MaxValue, ErrorMessage = "Low Stock Threshold must be a positive number")]
+        public int LowStockThreshold { get; set; } = 1;
     }
 }

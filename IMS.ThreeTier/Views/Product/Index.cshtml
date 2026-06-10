@@ -90,6 +90,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock</th>
+                <th>Low Stock Threshold</th>
                 <th>Category</th>
                 <th>Supplier</th>
 
@@ -125,6 +126,11 @@
                         <span class="badge bg-info">
                             @item.Quantity
                         </span>
+                    </td>
+
+                    <td class="editable-cell low-stock-threshold-cell"
+                        contenteditable="true">
+                        @item.LowStockThreshold
                     </td>
 
                     <td class="editable-cell">
@@ -317,14 +323,15 @@
 
         function showError(msg) {
 
-            $("#errorMessage").text(msg);
+            //$("#errorMessage").text(msg);
+            $("#errorMessage").html(msg);
 
             new bootstrap.Modal(
                 document.getElementById('errorModal')
             ).show();
         }
 
-        $(document).on("input", ".editable-cell, .price-cell", function () {
+        $(document).on("input", ".editable-cell, .price-cell, .low-stock-threshold-cell", function () {
 
             $(this).closest("tr").addClass("cell-dirty");
 
@@ -361,10 +368,18 @@
 
             var row = $(this).closest("tr");
 
+            let lowStockThreshold = row.find(".low-stock-threshold-cell").text().trim();
+
+            if (isNaN(lowStockThreshold) || lowStockThreshold < 1) {
+                showError("Low Stock Threshold must be greater than 0.");
+                return;
+            }
+
             var data = {
                 Id: row.data("id"),
                 Name: row.find(".editable-cell").first().text().trim(),
                 Price: row.find(".price-cell").text().trim(),
+                LowStockThreshold: lowStockThreshold,
                 CategoryId: row.find(".category-select").val(),
                 SupplierId: row.find(".supplier-select").val()
             };

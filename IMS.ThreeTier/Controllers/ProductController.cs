@@ -39,6 +39,7 @@ namespace IMS.WEB.Controllers
                     Name = x.Name,
                     Price = x.Price,
                     Quantity = x.Quantity,
+                    LowStockThreshold = x.LowStockThreshold,
                     CategoryId = x.CategoryId,
                     SupplierId = x.SupplierId,
                     CategoryName = x.CategoryName,
@@ -103,6 +104,7 @@ namespace IMS.WEB.Controllers
             {
                 Name = vm.Name,
                 Price = vm.Price,
+                LowStockThreshold = vm.LowStockThreshold,
                 CategoryId = vm.CategoryId,
                 SupplierId = vm.SupplierId
             };
@@ -119,13 +121,20 @@ namespace IMS.WEB.Controllers
         public async Task<IActionResult> Edit(ProductEditViewModel vm)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+
+                return BadRequest(string.Join("<br>", errors));
+            }
 
             var dto = new ProductDto
             {
                 Id = vm.Id,
                 Name = vm.Name,
                 Price = vm.Price,
+                LowStockThreshold = vm.LowStockThreshold,
                 CategoryId = vm.CategoryId,
                 SupplierId = vm.SupplierId
             };

@@ -48,6 +48,12 @@
             <span asp-validation-for="SupplierId" class="text-danger"></span>
         </div>
 
+        <div class="mb-3">
+            <label asp-for="LowStockThreshold" class="form-label"></label>
+            <input asp-for="LowStockThreshold" class="form-control" type="number" min="0" value="1" />
+            <span asp-validation-for="LowStockThreshold" class="text-danger"></span>
+        </div>
+
     </div>
 
     <div asp-validation-summary="All" class="text-danger"></div>
