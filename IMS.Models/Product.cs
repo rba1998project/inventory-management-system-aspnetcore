@@ -11,6 +11,9 @@ namespace IMS.Models
         [MaxLength(150)]
         public string Name { get; set; }
 
+        [MaxLength(500)]
+        public string? Description { get; set; }
+
         [Required]
         [Range(typeof(decimal), "0.01", "9999999999999999.99")]
         [Precision(18, 2)]

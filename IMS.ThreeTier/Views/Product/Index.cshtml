@@ -32,6 +32,39 @@
     .supplier-select {
         width: 100%;
     }
+
+    .table-slider-container {
+        overflow-x: auto;
+        overflow-y: hidden;
+        -webkit-overflow-scrolling: touch; /* Smooth swipe on mobile/trackpads */
+        padding-bottom: 2px; 
+        margin-bottom: 8px;
+    }
+
+    /* Forces table to stretch out to safely create the scroll/slide overflow effect */
+    .table-slider-container table {
+        min-width: 1500px;
+        margin-bottom: 2px;
+    }
+
+    .table-slider-container::-webkit-scrollbar {
+        height: 8px;
+    }
+
+    .table-slider-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+
+    .table-slider-container::-webkit-scrollbar-thumb {
+        background: #212529; 
+        border-radius: 10px;
+        transition: background 0.2s ease;
+    }
+
+    .table-slider-container::-webkit-scrollbar-thumb:hover {
+        background: #0d6efd;
+    }
 </style>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
@@ -85,9 +118,9 @@
     </div>
 </form>
 
-<div class="table-responsive">
+<div class="table-responsive table-slider-container">
 
-    <table class="table table-bordered table-edit-grid" id="productTable">
+    <table class="table table-bordered table-edit-grid " id="productTable">
 
         <thead>
             <tr>
