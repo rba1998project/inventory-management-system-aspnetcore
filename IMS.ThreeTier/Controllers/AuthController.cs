@@ -21,12 +21,17 @@ namespace IMS.WEB.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl = null)
         {
             // Hide navbar for login page
             ViewData["HideNavbarAuth"] = true;
 
-            return View();
+            var model = new LoginViewModel
+            {
+                ReturnUrl = returnUrl
+            };
+
+            return View(model);
         }
 
         [HttpPost]
@@ -54,7 +59,17 @@ namespace IMS.WEB.Controllers
 
             var user = await _userManager.FindByEmailAsync(model.Email);
 
-            //TO DO: Redirect based on role
+            var roles = await _userManager.GetRolesAsync(user);
+
+            if (!string.IsNullOrEmpty(model.ReturnUrl) && model.ReturnUrl !="/" && Url.IsLocalUrl(model.ReturnUrl))
+            {
+                return LocalRedirect(model.ReturnUrl);
+            }
+
+            if (roles.Contains("Admin") || roles.Contains("InventoryManager"))
+            {
+                return RedirectToAction("Index", "Dashboard");
+            }
 
             return RedirectToAction("Index", "Home");
         }

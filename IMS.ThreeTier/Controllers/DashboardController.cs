@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IMS.WEB.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,InventoryManager")]
     public class DashboardController : Controller
     {
         private readonly IDashboardService _dashboardService;

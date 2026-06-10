@@ -8,6 +8,14 @@ namespace IMS.WEB.Controllers
         [Authorize]
         public IActionResult Index()
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                if (User.IsInRole("Admin") || User.IsInRole("InventoryManager"))
+                {
+                    return RedirectToAction("Index", "Dashboard");
+                }
+
+            }
             return View();
         }
 

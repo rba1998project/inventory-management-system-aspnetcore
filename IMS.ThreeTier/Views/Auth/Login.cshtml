@@ -4,6 +4,8 @@
 
 <form asp-action="Login" method="post">
 
+    <input type="hidden" asp-for="ReturnUrl" />
+
     <div>
         <label>Email</label>
         <input asp-for="Email" class="form-control" />

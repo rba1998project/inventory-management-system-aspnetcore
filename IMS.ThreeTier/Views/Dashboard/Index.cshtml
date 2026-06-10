@@ -4,6 +4,14 @@
     ViewData["Title"] = "Dashboard";
 }
 
+
+<style>
+    .hover-shadow:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
+    }
+</style>
+
 <div class="container-fluid mt-4">
     <div class="row mb-4">
         <div class="col-12">
@@ -54,110 +62,116 @@
         </div>
     </div>
 
-    <!-- Dashboard Cards Row 2 -->
-    <div class="row mb-4">
-        <!-- Users Card -->
-        <div class="col-md-6 col-lg-4 mb-3">
-            <a href="/UserManagement/Index" class="text-decoration-none">
-                <div class="card h-100 shadow-sm border-0 hover-shadow" style="cursor: pointer; transition: transform 0.2s;">
-                    <div class="card-body text-center">
-                        <i class="bi bi-people fs-1 text-info mb-3"></i>
-                        <h6 class="card-title text-muted">Total Users</h6>
-                        <h2 class="fw-bold text-dark">@Model.TotalUsers</h2>
-                    </div>
-                </div>
-            </a>
-        </div>
+    @if (User.IsInRole("Admin"))
+    {
+        <!-- Dashboard Cards Row 2 -->
+        <div class="row mb-4">
 
-        <!-- Low Stock Products Card -->
-        <div class="col-md-6 col-lg-4 mb-3">
-            <a href="/Product/LowStock" class="text-decoration-none">
-                <div class="card h-100 shadow-sm border-0 hover-shadow" style="cursor: pointer; transition: transform 0.2s;">
-                    <div class="card-body text-center">
-                        <i class="bi bi-exclamation-triangle fs-1 text-danger mb-3"></i>
-                        <h6 class="card-title text-muted">Low Stock Products</h6>
-                        <h2 class="fw-bold text-dark">@Model.LowStockProducts</h2>
-                    </div>
-                </div>
-            </a>
-        </div>
 
-        <!-- Inventory Value Card -->
-        <div class="col-md-6 col-lg-4 mb-3">
-            <a href="/Product/Index" class="text-decoration-none">
-                <div class="card h-100 shadow-sm border-0 hover-shadow" style="cursor: pointer; transition: transform 0.2s;">
-                    <div class="card-body text-center">
-                        <i class="bi bi-cash-coin fs-1 text-success mb-3"></i>
-                        <h6 class="card-title text-muted">Total Inventory Value</h6>
-                        <h2 class="fw-bold text-dark">$@Model.TotalInventoryValue.ToString("N2")</h2>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-
-    <!-- Recent Activity Section -->
-    <div class="row">
-        <div class="col-12">
-            <div class="card shadow-sm border-0">
-                <div class="card-header bg-light border-bottom">
-                    <h5 class="mb-0 fw-bold">Recent Inventory Activity</h5>
-                </div>
-                <div class="card-body">
-                    @if (Model.RecentTransactions != null && Model.RecentTransactions.Count > 0)
-                    {
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="table-light">
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Product</th>
-                                        <th>Transaction Type</th>
-                                        <th>Quantity</th>
-                                        <th>User</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var transaction in Model.RecentTransactions)
-                                    {
-                                        <tr>
-                                            <td>@transaction.CreatedAt.ToString("g")</td>
-                                            <td>@transaction.ProductName</td>
-                                            <td>
-                                                @if (transaction.TransactionType == "IN")
-                                                {
-                                                    <span class="badge bg-success">Stock In</span>
-                                                }
-                                                else if (transaction.TransactionType == "OUT")
-                                                {
-                                                    <span class="badge bg-danger">Stock Out</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge bg-warning">@transaction.TransactionType</span>
-                                                }
-                                            </td>
-                                            <td>@transaction.Quantity</td>
-                                            <td>@transaction.CreatedBy</td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
+            <!-- Users Card -->
+            <div class="col-md-6 col-lg-4 mb-3">
+                <a href="/UserManagement/Index" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm border-0 hover-shadow" style="cursor: pointer; transition: transform 0.2s;">
+                        <div class="card-body text-center">
+                            <i class="bi bi-people fs-1 text-info mb-3"></i>
+                            <h6 class="card-title text-muted">Total Users</h6>
+                            <h2 class="fw-bold text-dark">@Model.TotalUsers</h2>
                         </div>
-                    }
-                    else
-                    {
-                        <p class="text-muted text-center py-4">No recent transactions</p>
-                    }
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- Low Stock Products Card -->
+            <div class="col-md-6 col-lg-4 mb-3">
+                <a href="/Product/LowStock" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm border-0 hover-shadow" style="cursor: pointer; transition: transform 0.2s;">
+                        <div class="card-body text-center">
+                            <i class="bi bi-exclamation-triangle fs-1 text-danger mb-3"></i>
+                            <h6 class="card-title text-muted">Low Stock Products</h6>
+                            <h2 class="fw-bold text-dark">@Model.LowStockProducts</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+            <!-- Inventory Value Card -->
+            <div class="col-md-6 col-lg-4 mb-3">
+                <a href="/Product/Index" class="text-decoration-none">
+                    <div class="card h-100 shadow-sm border-0 hover-shadow" style="cursor: pointer; transition: transform 0.2s;">
+                        <div class="card-body text-center">
+                            <i class="bi bi-cash-coin fs-1 text-success mb-3"></i>
+                            <h6 class="card-title text-muted">Total Inventory Value</h6>
+                            <h2 class="fw-bold text-dark">$@Model.TotalInventoryValue.ToString("N2")</h2>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+
+        </div>
+    }
+
+    @if (User.IsInRole("Admin"))
+    {
+        <!-- Recent Activity Section -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-light border-bottom">
+                        <h5 class="mb-0 fw-bold">Recent Inventory Activity</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (Model.RecentTransactions != null && Model.RecentTransactions.Count > 0)
+                        {
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Date</th>
+                                            <th>Product</th>
+                                            <th>Transaction Type</th>
+                                            <th>Quantity</th>
+                                            <th>User</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var transaction in Model.RecentTransactions)
+                                        {
+                                            <tr>
+                                                <td>@transaction.CreatedAt.ToString("g")</td>
+                                                <td>@transaction.ProductName</td>
+                                                <td>
+                                                    @if (transaction.TransactionType == "IN")
+                                                    {
+                                                        <span class="badge bg-success">Stock In</span>
+                                                    }
+                                                    else if (transaction.TransactionType == "OUT")
+                                                    {
+                                                        <span class="badge bg-danger">Stock Out</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge bg-warning">@transaction.TransactionType</span>
+                                                    }
+                                                </td>
+                                                <td>@transaction.Quantity</td>
+                                                <td>@transaction.CreatedBy</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted text-center py-4">No recent transactions</p>
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-
-<style>
-    .hover-shadow:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15) !important;
     }
-</style>
+
+</div>
