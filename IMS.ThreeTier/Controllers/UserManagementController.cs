@@ -33,19 +33,19 @@ namespace IMS.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CreateUserViewModel model)
+        public async Task<IActionResult> Create(UserCreateViewModel model)
         {
             if (!ModelState.IsValid)
                 return View(model);
 
-            var dto = new CreateUserDto
+            var dto = new UserCreateDto
             {
                 Email = model.Email,
                 Password = model.Password,
                 Role = model.Role
             };
 
-            var result = await _service.CreateUserAsync(dto);
+            var result = await _service. UserCreateAsync(dto);
 
             if (!result.Succeeded)
             {

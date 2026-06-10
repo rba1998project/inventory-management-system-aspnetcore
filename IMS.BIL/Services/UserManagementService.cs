@@ -2,6 +2,7 @@
 using IMS.BLL.Interfaces;
 using IMS.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace IMS.BLL.Services
 {
@@ -16,14 +17,14 @@ namespace IMS.BLL.Services
             _roleManager = roleManager;
         }
 
-        public Task<List<ApplicationUser>> GetAllUsersAsync()
+        public async Task<List<ApplicationUser>> GetAllUsersAsync()
         {
-            return Task.FromResult(_userManager.Users.ToList());
+            return await _userManager.Users.OrderBy(u => u.UserName).ToListAsync();
         }
 
-        public Task<List<string>> GetAllRolesAsync()
+        public async Task<List<string>> GetAllRolesAsync()
         {
-            return Task.FromResult(_roleManager.Roles.Select(r => r.Name).ToList());
+            return await _roleManager.Roles.Select(r => r.Name).OrderBy(name => name).ToListAsync();
         }
 
         public async Task<Dictionary<string, string>> GetUserRolesMapAsync(List<ApplicationUser> users)
@@ -39,7 +40,7 @@ namespace IMS.BLL.Services
             return result;
         }
 
-        public async Task<IdentityResult> CreateUserAsync(CreateUserDto dto)
+        public async Task<IdentityResult>  UserCreateAsync(UserCreateDto dto)
         {
             var user = new ApplicationUser
             {

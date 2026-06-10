@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace IMS.BLL.DTOs
 {
-    public class CreateUserDto
+    public class UserCreateDto
     {
         public string Email { get; set; }
         public string Password { get; set; }

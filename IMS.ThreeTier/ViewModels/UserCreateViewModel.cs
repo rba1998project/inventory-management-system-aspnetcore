@@ -2,7 +2,7 @@
 
 namespace IMS.WEB.ViewModels
 {
-    public class CreateUserViewModel
+    public class UserCreateViewModel
     {
         [Required]
         [EmailAddress]
