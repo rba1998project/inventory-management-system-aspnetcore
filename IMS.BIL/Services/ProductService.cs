@@ -154,10 +154,9 @@ namespace IMS.BLL.Services
             await _repo.AddAsync(product);
 
             _logger.LogInformation(
-                "Product {ProductName} created by {User} at {Time}",
+                "Product {ProductName} created by {User}",
                 product.Name,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
         public async Task UpdateAsync(ProductDto dto, string user)
@@ -178,10 +177,9 @@ namespace IMS.BLL.Services
             await _repo.UpdateAsync(product);
 
             _logger.LogInformation(
-                "Product {ProductName} updated by {User} at {Time}",
+                "Product {ProductName} updated by {User}",
                 product.Name,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
         public async Task DeleteAsync(int id, string user)
@@ -189,10 +187,9 @@ namespace IMS.BLL.Services
             await _repo.DeleteAsync(id, user);
 
             _logger.LogInformation(
-                "Product(id) {ProductId} deleted by {User} at {Time}",
+                "Product(id) {ProductId} deleted by {User}",
                 id ,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
     }
 }

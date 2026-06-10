@@ -53,10 +53,9 @@ namespace IMS.BLL.Services
             await _stockRepository.SaveChangesAsync();
 
             _logger.LogInformation(
-                        "StockIn operation done for ProductId {ProductId} by {User} at {Time}. Previous quantity {PreviousQuantity} new quantity {NewQuantity}",
+                        "StockIn operation done for ProductId {ProductId} by {User}. Previous quantity {PreviousQuantity} new quantity {NewQuantity}",
                         product.Id,
                         username,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
                         previousQuantity,
                         product.Quantity);
         }
@@ -94,10 +93,9 @@ namespace IMS.BLL.Services
             await _stockRepository.SaveChangesAsync();
 
             _logger.LogInformation(
-                        "StockOut operation done for ProductId {ProductId} by {User} at {Time}. Previous quantity {PreviousQuantity} new quantity {NewQuantity}",
+                        "StockOut operation done for ProductId {ProductId} by {User}. Previous quantity {PreviousQuantity} new quantity {NewQuantity}",
                         product.Id,
                         username,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
                         previousQuantity,
                         product.Quantity);
 
@@ -134,10 +132,9 @@ namespace IMS.BLL.Services
             await _stockRepository.SaveChangesAsync();
 
             _logger.LogInformation(
-                        "Adjust operation done for ProductId {ProductId} by {User} at {Time}. Previous quantity {PreviousQuantity} new quantity {NewQuantity}",
+                        "Adjust operation done for ProductId {ProductId} by {User}. Previous quantity {PreviousQuantity} new quantity {NewQuantity}",
                         product.Id,
                         username,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
                         previousQuantity,
                         product.Quantity);
         }

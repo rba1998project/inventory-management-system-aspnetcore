@@ -85,10 +85,9 @@ namespace IMS.BLL.Services
             await _repo.AddAsync(category);
 
             _logger.LogInformation(
-                "Category {CategoryName} created by {User} at {Time}",
+                "Category {CategoryName} created by {User}",
                 category.Name,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
         //TODO: Implement optimistic concurrency control using RowVersion
@@ -104,10 +103,9 @@ namespace IMS.BLL.Services
             await _repo.UpdateAsync(category);
 
             _logger.LogInformation(
-                "Category {CategoryName} updated by {User} at {Time}",
+                "Category {CategoryName} updated by {User}",
                 category.Name,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
 
@@ -116,10 +114,9 @@ namespace IMS.BLL.Services
             await _repo.DeleteAsync(id, user);
 
             _logger.LogInformation(
-                "Category(id) {CategoryId} deleted by {User} at {Time}",
+                "Category(id) {CategoryId} deleted by {User}",
                 id,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
         public async Task<List<string>> GetProductNamesByCategoryIdAsync(int categoryId)

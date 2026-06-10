@@ -94,10 +94,9 @@ namespace IMS.BLL.Services
             await _repo.AddAsync(supplier);
 
             _logger.LogInformation(
-                "Supplier {SupplierName} created by {User} at {Time}",
+                "Supplier {SupplierName} created by {User}",
                 supplier.Name,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
         public async Task UpdateAsync(SupplierDto dto, string user)
@@ -115,10 +114,9 @@ namespace IMS.BLL.Services
             await _repo.UpdateAsync(supplier);
 
             _logger.LogInformation(
-                "Supplier {SupplierName} updated by {User} at {Time}",
+                "Supplier {SupplierName} updated by {User}",
                 supplier.Name,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
         public async Task DeleteAsync(int id, string user)
@@ -126,10 +124,9 @@ namespace IMS.BLL.Services
             await _repo.DeleteAsync(id, user);
 
             _logger.LogInformation(
-                "Supplier(id) {SupplierId} deleted by {User} at {Time}",
+                "Supplier(id) {SupplierId} deleted by {User}",
                 id,
-                user,
-                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                user);
         }
 
         public async Task<List<string>> GetProductNamesBySupplierIdAsync(int supplierId)

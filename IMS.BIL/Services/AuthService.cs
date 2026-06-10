@@ -28,9 +28,8 @@ namespace IMS.BLL.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation(
-                        "User {UserEmail} logged in at {Time}",
-                        dto.Email,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                        "User {UserEmail} logged in",
+                        dto.Email);
 
                 return new LoginResponseDto { Success = true, Message = "Login successful" };
             }
@@ -38,17 +37,15 @@ namespace IMS.BLL.Services
             if (result.IsLockedOut)
             {
                 _logger.LogInformation(
-                        "User {UserEmail} failed to log in at {Time} due to account lockout",
-                        dto.Email,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                        "User {UserEmail} failed to log in due to account lockout",
+                        dto.Email);
 
                 return new LoginResponseDto { Success = false, Message = "Account locked" };
             }
 
             _logger.LogInformation(
-                        "Failed login attempt for user {UserEmail} at {Time}",
-                        dto.Email,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                        "Failed login attempt for user {UserEmail} ",
+                        dto.Email);
 
             return new LoginResponseDto { Success = false, Message = "Invalid credentials" };
         }
@@ -58,9 +55,8 @@ namespace IMS.BLL.Services
             await _signInManager.SignOutAsync();
 
             _logger.LogInformation(
-                        "User {UserEmail} logged out at {Time}",
-                        userEmail,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
+                        "User {UserEmail} logged out",
+                        userEmail);
         }
     }
 }

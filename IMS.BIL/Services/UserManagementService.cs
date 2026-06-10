@@ -67,10 +67,9 @@ namespace IMS.BLL.Services
             await _userManager.AddToRoleAsync(user, dto.Role);
 
             _logger.LogInformation(
-                        "User {UserEmail} created with role {UserRole} at {Time} by {Referer}",
+                        "User {UserEmail} created with role {UserRole} by {Referer}",
                         dto.Email,
                         dto.Role,
-                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
                         referer);
 
             return result;
@@ -91,10 +90,9 @@ namespace IMS.BLL.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation(
-                            "User {UserEmail} role updated to {UserRole} at {Time} by {Referer}",
+                            "User {UserEmail} role updated to {UserRole} by {Referer}",
                             user.Email,
                             role,
-                            DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
                             referer);
             }
 
@@ -109,9 +107,8 @@ namespace IMS.BLL.Services
             if (result.Succeeded)
             {
                 _logger.LogInformation(
-                            "User {UserEmail} deleted at {Time} by {Referer}",
+                            "User {UserEmail} deleted by {Referer}",
                             user.Email,
-                            DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
                             referer);
             }
 
