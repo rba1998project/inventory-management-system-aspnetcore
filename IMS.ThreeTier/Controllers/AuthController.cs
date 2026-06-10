@@ -77,7 +77,8 @@ namespace IMS.WEB.Controllers
         [Authorize]
         public async Task<IActionResult> Logout()
         {
-            await _authService.LogoutAsync();
+            var userEmail = User.Identity?.Name ?? "Unknown";
+            await _authService.LogoutAsync(userEmail);
             return RedirectToAction("Login");
         }
     }

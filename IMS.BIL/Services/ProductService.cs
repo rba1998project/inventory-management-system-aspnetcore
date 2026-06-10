@@ -2,16 +2,19 @@
 using IMS.BLL.Interfaces;
 using IMS.DAL.Interfaces;
 using IMS.Models;
+using Microsoft.Extensions.Logging;
 
 namespace IMS.BLL.Services
 {
     public class ProductService : IProductService
     {
         private readonly IProductRepository _repo;
+        private readonly ILogger<ProductService> _logger;
 
-        public ProductService(IProductRepository repo)
+        public ProductService(IProductRepository repo, ILogger<ProductService> logger)
         {
             _repo = repo;
+            _logger = logger;
         }
 
         public async Task<PagedResult<ProductDto>> GetPagedAsync(int page, int pageSize, string search, int? categoryId = null, int? supplierId = null)
@@ -149,6 +152,11 @@ namespace IMS.BLL.Services
             };
 
             await _repo.AddAsync(product);
+
+            _logger.LogInformation(
+                "Product {ProductName} created by {User}",
+                product.Name,
+                user);
         }
 
         public async Task UpdateAsync(ProductDto dto, string user)
@@ -167,11 +175,21 @@ namespace IMS.BLL.Services
             product.LastModifiedBy = user;
 
             await _repo.UpdateAsync(product);
+
+            _logger.LogInformation(
+                "Product {ProductName} updated by {User}",
+                product.Name,
+                user);
         }
 
         public async Task DeleteAsync(int id, string user)
         {
             await _repo.DeleteAsync(id, user);
+
+            _logger.LogInformation(
+                "Product(id) {ProductId} deleted by {User}",
+                id ,
+                user);
         }
     }
 }

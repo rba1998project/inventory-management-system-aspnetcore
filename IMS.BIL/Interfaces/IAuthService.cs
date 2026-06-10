@@ -7,6 +7,6 @@ namespace IMS.BLL.Interfaces
     {
         Task<LoginResponseDto> LoginAsync(LoginDto dto);
 
-        Task LogoutAsync();
+        Task LogoutAsync(string userEmail);
     }
 }

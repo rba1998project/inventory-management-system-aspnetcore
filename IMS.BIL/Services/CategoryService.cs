@@ -2,16 +2,19 @@
 using IMS.BLL.Interfaces;
 using IMS.DAL.Interfaces;
 using IMS.Models;
+using Microsoft.Extensions.Logging;
 
 namespace IMS.BLL.Services
 {
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _repo;
+        private readonly ILogger<CategoryService> _logger;
 
-        public CategoryService(ICategoryRepository repo)
+        public CategoryService(ICategoryRepository repo, ILogger<CategoryService> logger)
         {
             _repo = repo;
+            _logger = logger;
         }
 
         public async Task<PagedResult<CategoryDto>> GetPagedAsync(int page, int pageSize, string search)
@@ -80,6 +83,11 @@ namespace IMS.BLL.Services
             };
 
             await _repo.AddAsync(category);
+
+            _logger.LogInformation(
+                "Category {CategoryName} created by {User}",
+                category.Name,
+                user);
         }
 
         //TODO: Implement optimistic concurrency control using RowVersion
@@ -93,12 +101,22 @@ namespace IMS.BLL.Services
             category.LastModifiedBy = user;
 
             await _repo.UpdateAsync(category);
+
+            _logger.LogInformation(
+                "Category {CategoryName} updated by {User}",
+                category.Name,
+                user);
         }
 
 
         public async Task DeleteAsync(int id, string user)
         {
             await _repo.DeleteAsync(id, user);
+
+            _logger.LogInformation(
+                "Category(id) {CategoryId} deleted by {User}",
+                id,
+                user);
         }
 
         public async Task<List<string>> GetProductNamesByCategoryIdAsync(int categoryId)

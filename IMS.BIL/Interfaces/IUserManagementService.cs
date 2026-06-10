@@ -14,8 +14,10 @@ namespace IMS.BLL.Interfaces
 
         Task<ApplicationUser> GetUserByEmailAsync(string email);
 
-        Task<IdentityResult> UpdateUserRoleAsync(string userId, string role);
+        Task<IdentityResult>  UserCreateAsync(UserCreateDto dto, string referer);
 
-        Task<IdentityResult> DeleteUserAsync(string userId);
+        Task<IdentityResult> UpdateUserRoleAsync(string userId, string role, string referer);
+
+        Task<IdentityResult> DeleteUserAsync(string userId, string referer);
     }
 }
