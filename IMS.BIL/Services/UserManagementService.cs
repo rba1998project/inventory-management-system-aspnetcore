@@ -3,6 +3,7 @@ using IMS.BLL.Interfaces;
 using IMS.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace IMS.BLL.Services
 {
@@ -10,11 +11,13 @@ namespace IMS.BLL.Services
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<UserManagementService> _logger;
 
-        public UserManagementService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserManagementService(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager, ILogger<UserManagementService> logger)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _logger = logger;
         }
 
         public async Task<List<ApplicationUser>> GetAllUsersAsync()
@@ -39,11 +42,13 @@ namespace IMS.BLL.Services
 
             return result;
         }
-
+        
         public async Task<ApplicationUser> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
         }
+
+        public async Task<IdentityResult>  UserCreateAsync(UserCreateDto dto, string referer)
         {
             var user = new ApplicationUser
             {
@@ -61,10 +66,17 @@ namespace IMS.BLL.Services
 
             await _userManager.AddToRoleAsync(user, dto.Role);
 
+            _logger.LogInformation(
+                        "User {UserEmail} created with role {UserRole} at {Time} by {Referer}",
+                        dto.Email,
+                        dto.Role,
+                        DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                        referer);
+
             return result;
         }
 
-        public async Task<IdentityResult> UpdateUserRoleAsync(string userId, string role)
+        public async Task<IdentityResult> UpdateUserRoleAsync(string userId, string role, string referer)
         {
             var user = await _userManager.FindByIdAsync(userId);
 
@@ -74,13 +86,36 @@ namespace IMS.BLL.Services
             if (!await _roleManager.RoleExistsAsync(role))
                 await _roleManager.CreateAsync(new IdentityRole(role));
 
-            return await _userManager.AddToRoleAsync(user, role);
+            var result = await _userManager.AddToRoleAsync(user, role);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation(
+                            "User {UserEmail} role updated to {UserRole} at {Time} by {Referer}",
+                            user.Email,
+                            role,
+                            DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                            referer);
+            }
+
+            return result;
         }
 
-        public async Task<IdentityResult> DeleteUserAsync(string userId)
+        public async Task<IdentityResult> DeleteUserAsync(string userId, string referer)
         {
             var user = await _userManager.FindByIdAsync(userId);
-            return await _userManager.DeleteAsync(user);
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                _logger.LogInformation(
+                            "User {UserEmail} deleted at {Time} by {Referer}",
+                            user.Email,
+                            DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"),
+                            referer);
+            }
+
+            return result;
         }
     }
 }

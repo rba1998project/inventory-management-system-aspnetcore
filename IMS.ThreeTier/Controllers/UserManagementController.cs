@@ -54,7 +54,9 @@ namespace IMS.WEB.Controllers
                 Role = model.Role
             };
 
-            var result = await _service. UserCreateAsync(dto);
+            var referer = User.Identity.Name;
+
+            var result = await _service. UserCreateAsync(dto, referer);
 
             if (!result.Succeeded)
             {
@@ -71,7 +73,10 @@ namespace IMS.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeRole(string userId, string role)
         {
-            await _service.UpdateUserRoleAsync(userId, role);
+
+            var referer = User.Identity.Name;
+            await _service.UpdateUserRoleAsync(userId, role, referer);
+
             TempData["SuccessMessage"] = "Role updated successfully!";
             return RedirectToAction("Index");
         }
@@ -79,7 +84,8 @@ namespace IMS.WEB.Controllers
         [HttpPost]
         public async Task<IActionResult> Delete(string userId)
         {
-            await _service.DeleteUserAsync(userId);
+            var referer = User.Identity.Name;
+            await _service.DeleteUserAsync(userId, referer);
             return RedirectToAction("Index");
         }
     }

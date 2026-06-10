@@ -2,16 +2,19 @@
 using IMS.BLL.Interfaces;
 using IMS.DAL.Interfaces;
 using IMS.Models;
+using Microsoft.Extensions.Logging;
 
 namespace IMS.BLL.Services
 {
     public class SupplierService : ISupplierService
     {
         private readonly ISupplierRepository _repo;
+        private readonly ILogger<SupplierService> _logger;
 
-        public SupplierService(ISupplierRepository repo)
+        public SupplierService(ISupplierRepository repo, ILogger<SupplierService> logger)
         {
             _repo = repo;
+            _logger = logger;
         }
         public async Task<PagedResult<SupplierDto>> GetPagedAsync(int page, int pageSize, string search)
         {
@@ -89,6 +92,12 @@ namespace IMS.BLL.Services
             };
 
             await _repo.AddAsync(supplier);
+
+            _logger.LogInformation(
+                "Supplier {SupplierName} created by {User} at {Time}",
+                supplier.Name,
+                user,
+                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
         }
 
         public async Task UpdateAsync(SupplierDto dto, string user)
@@ -104,11 +113,23 @@ namespace IMS.BLL.Services
             supplier.LastModifiedBy = user;
 
             await _repo.UpdateAsync(supplier);
+
+            _logger.LogInformation(
+                "Supplier {SupplierName} updated by {User} at {Time}",
+                supplier.Name,
+                user,
+                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
         }
 
         public async Task DeleteAsync(int id, string user)
         {
             await _repo.DeleteAsync(id, user);
+
+            _logger.LogInformation(
+                "Supplier(id) {SupplierId} deleted by {User} at {Time}",
+                id,
+                user,
+                DateTime.UtcNow.ToString("dd/MM/yyyy HH:mm"));
         }
 
         public async Task<List<string>> GetProductNamesBySupplierIdAsync(int supplierId)
