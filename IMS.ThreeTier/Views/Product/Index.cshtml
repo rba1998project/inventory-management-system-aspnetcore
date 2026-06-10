@@ -125,6 +125,7 @@
         <thead>
             <tr>
                 <th>Name</th>
+                <th>Description</th>
                 <th>Price</th>
                 <th>Stock</th>
                 <th>Low Stock Threshold</th>
@@ -152,6 +153,11 @@
                     <td class="editable-cell"
                         contenteditable="true">
                         @item.Name
+                    </td>
+
+                    <td class="editable-cell"
+                        contenteditable="true">
+                        @item.Description
                     </td>
 
                     <td class="editable-cell price-cell"
@@ -415,6 +421,7 @@
             var data = {
                 Id: row.data("id"),
                 Name: row.find(".editable-cell").first().text().trim(),
+                Description: row.find(".editable-cell").eq(1).text().trim(),
                 Price: row.find(".price-cell").text().trim(),
                 LowStockThreshold: lowStockThreshold,
                 CategoryId: row.find(".category-select").val(),

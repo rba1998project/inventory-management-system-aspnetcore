@@ -24,6 +24,7 @@ namespace IMS.BLL.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
+                    Description = p.Description,
                     Price = p.Price,
                     Quantity = p.Quantity,
                     LowStockThreshold = p.LowStockThreshold,
@@ -52,6 +53,7 @@ namespace IMS.BLL.Services
             {
                 Id = p.Id,
                 Name = p.Name,
+                Description = p.Description,
                 Price = p.Price,
                 Quantity = p.Quantity,
                 LowStockThreshold = p.LowStockThreshold,
@@ -73,6 +75,7 @@ namespace IMS.BLL.Services
             {
                 Id = p.Id,
                 Name = p.Name,
+                Description = p.Description,
                 Price = p.Price,
                 Quantity = p.Quantity,
                 LowStockThreshold = p.LowStockThreshold,
@@ -98,6 +101,7 @@ namespace IMS.BLL.Services
                 {
                     Id = p.Id,
                     Name = p.Name,
+                    Description = p.Description,
                     Price = p.Price,
                     Quantity = p.Quantity,
                     LowStockThreshold = p.LowStockThreshold,
@@ -133,6 +137,7 @@ namespace IMS.BLL.Services
             var product = new Product
             {
                 Name = dto.Name,
+                Description = dto.Description,
                 Price = Math.Round(dto.Price, 2),
                 Quantity = 0,
                 LowStockThreshold = dto.LowStockThreshold,
@@ -151,6 +156,7 @@ namespace IMS.BLL.Services
             var product = await _repo.GetByIdAsync(dto.Id);
 
             product.Name = dto.Name;
+            product.Description = dto.Description;
             product.Price = Math.Round(dto.Price, 2);
             product.LowStockThreshold = dto.LowStockThreshold;
             product.CategoryId = dto.CategoryId;

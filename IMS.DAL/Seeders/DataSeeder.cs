@@ -48,13 +48,13 @@ namespace IMS.DAL.Seeders
 
             var products = new List<Product>
             {
-                new() { Name = "Laptop", Price = 65000, Quantity = 0, CategoryId = categories[0].Id, SupplierId = suppliers[0].Id, CreatedBy = "Seeder" },
-                new() { Name = "Novel Book", Price = 500, Quantity = 0, CategoryId = categories[1].Id, SupplierId = suppliers[1].Id, CreatedBy = "Seeder" },
-                new() { Name = "T-Shirt", Price = 800, Quantity = 0, CategoryId = categories[2].Id, SupplierId = suppliers[2].Id, CreatedBy = "Seeder" },
-                new() { Name = "Sofa", Price = 25000, Quantity = 0, CategoryId = categories[3].Id, SupplierId = suppliers[3].Id, CreatedBy = "Seeder" },
-                new() { Name = "Football", Price = 1200, Quantity = 0, CategoryId = categories[4].Id, SupplierId = suppliers[4].Id, CreatedBy = "Seeder" },
-                new() { Name = "Rice Bag", Price = 1500, Quantity = 0, CategoryId = categories[5].Id, SupplierId = suppliers[5].Id, CreatedBy = "Seeder" },
-                new() { Name = "Notebook", Price = 100, Quantity = 0, CategoryId = categories[6].Id, SupplierId = suppliers[6].Id, CreatedBy = "Seeder" }
+                new() { Name = "Laptop", Description = "High performance laptop", Price = 65000, Quantity = 0, CategoryId = categories[0].Id, SupplierId = suppliers[0].Id, LowStockThreshold = 5, CreatedBy = "Seeder" },
+                new() { Name = "Novel Book", Description = "Interesting novel book", Price = 500, Quantity = 0, CategoryId = categories[1].Id, SupplierId = suppliers[1].Id, LowStockThreshold = 5, CreatedBy = "Seeder" },
+                new() { Name = "T-Shirt", Description = "Comfortable cotton t-shirt", Price = 800, Quantity = 0, CategoryId = categories[2].Id, SupplierId = suppliers[2].Id, LowStockThreshold = 5, CreatedBy = "Seeder" },
+                new() { Name = "Sofa", Description = "Comfortable 3-seater sofa", Price = 25000, Quantity = 0, CategoryId = categories[3].Id, SupplierId = suppliers[3].Id, LowStockThreshold = 5, CreatedBy = "Seeder" },
+                new() { Name = "Football", Description = "Standard size football", Price = 1200, Quantity = 0, CategoryId = categories[4].Id, SupplierId = suppliers[4].Id, LowStockThreshold = 5, CreatedBy = "Seeder" },
+                new() { Name = "Rice Bag", Description = "10kg bag of rice", Price = 1500, Quantity = 0, CategoryId = categories[5].Id, SupplierId = suppliers[5].Id, LowStockThreshold = 5, CreatedBy = "Seeder" },
+                new() { Name = "Notebook", Description = "200-page ruled notebook", Price = 100, Quantity = 0, CategoryId = categories[6].Id, SupplierId = suppliers[6].Id, LowStockThreshold = 5, CreatedBy = "Seeder" }
             };
 
             db.Products.AddRange(products);

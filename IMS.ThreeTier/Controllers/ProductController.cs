@@ -37,6 +37,7 @@ namespace IMS.WEB.Controllers
                 {
                     Id = x.Id,
                     Name = x.Name,
+                    Description = x.Description,
                     Price = x.Price,
                     Quantity = x.Quantity,
                     LowStockThreshold = x.LowStockThreshold,
@@ -104,6 +105,7 @@ namespace IMS.WEB.Controllers
             {
                 Name = vm.Name,
                 Price = vm.Price,
+                Description = vm.Description,
                 LowStockThreshold = vm.LowStockThreshold,
                 CategoryId = vm.CategoryId,
                 SupplierId = vm.SupplierId
@@ -133,6 +135,7 @@ namespace IMS.WEB.Controllers
             {
                 Id = vm.Id,
                 Name = vm.Name,
+                Description = vm.Description,
                 Price = vm.Price,
                 LowStockThreshold = vm.LowStockThreshold,
                 CategoryId = vm.CategoryId,
