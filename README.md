@@ -2,7 +2,7 @@
 
 > **A layered inventory management application built with ASP.NET Core MVC and Three-Tier Architecture.**
 >
-> ⚠️ **Project Status:** Currently under active development
+> **Project Status:** Core Features Completed | Additional Enhancements Planned
 
 ## 📋 Table of Contents
 
@@ -25,16 +25,16 @@
 
 ## 🎯 Overview
 
-IMS (Inventory Management System) is a web-based inventory management application built with **ASP.NET Core 8.0 using MVC, Razor Pages, and a Three-Tier Architecture.** The project is focused on implementing clean architecture principles, role-based authentication, and scalable module design for inventory operations.
+IMS (Inventory Management System) is a web-based inventory management application built with **ASP.NET Core 8.0 using MVC and a Three-Tier Architecture.** The project demonstrates layered architecture, separation of concerns, and common enterprise application patterns such as Repository Pattern, Service Layer, Dependency Injection, Authentication & Authorization, and Inventory Operations.
 
 **Key Highlights:**
 - ✅ Role-Based Access Control (Admin & InventoryManager)
-- ✅ Enterprise-grade architecture with Dependency Injection
+- ✅ Complete inventory operations (stock tracking, adjustments, transactions)
 - ✅ Secure authentication using ASP.NET Identity
-- ✅ Comprehensive CRUD operations for core entities
-- ✅ Modular, scalable service layer
-- ✅ Repository pattern for data access abstraction
-- ✅ SQL Server with Entity Framework Core
+- ✅ Comprehensive CRUD operations for all core entities
+- ✅ Modular service layer with dependency injection
+- ✅ Repository pattern for data access
+- ✅ SQL Server with Entity Framework Core 8
 
 ---
 
@@ -107,6 +107,29 @@ The system follows a **Three-Tier Layered Architecture** pattern, ensuring separ
 
 ---
 
+## 🎯 Skills Demonstrated
+
+- ASP.NET Core MVC
+- Razor Views
+- ASP.NET Identity
+- Entity Framework Core
+- SQL Server
+- Three-Tier Architecture
+- Repository Pattern
+- Service Layer Pattern
+- Dependency Injection
+- DTO Pattern
+- Role-Based Authorization
+- Logging
+- Global Exception Handling Middleware
+- Audit Trail Implementation
+- Soft Delete Pattern
+- Pagination & Searching
+- Excel/PDF Export
+- Git Version Control
+
+---
+
 ## ✨ Features
 
 ### ✅ Implemented Features
@@ -121,73 +144,104 @@ The system follows a **Three-Tier Layered Architecture** pattern, ensuring separ
 
 #### User Management
 - [x] Create users with role assignment
-- [x] View all users
+- [x] View all users with pagination
 - [x] Assign roles to users
 - [x] Admin-only access controls
 
 #### Category Management
-- [x] Create categories
-- [x] Read/View categories with pagination
-- [x] Update category details
-- [x] Soft delete categories
-- [x] Search functionality
-- [x] Audit trail (Created by, Last modified by)
+- [x] Create, read, update, and delete (CRUD) categories
+- [x] Soft delete support
+- [x] Pagination and search functionality
+- [x] Audit trail (CreatedBy, CreatedAt, LastModifiedBy, LastModifiedAt)
 
 #### Supplier Management
-- [x] Full supplier CRUD operations
+- [x] Full CRUD operations for suppliers
 - [x] Contact information (email, phone, address)
 - [x] Supplier-Product relationships
 - [x] Pagination and search
-- [x] Audit tracking
+- [x] Soft delete and audit tracking
 
 #### Product Management
-- [x] Complete product CRUD
-- [x] Product categorization
-- [x] Supplier assignment
+- [x] Complete CRUD operations
+- [x] Product categorization and supplier assignment
 - [x] Price and quantity tracking
 - [x] Image path support
-- [x] Product pagination
-- [x] Advanced search
+- [x] Pagination and advanced search
+- [x] Soft delete and audit trail
+- [x] Low stock threshold configuration
+
+#### Stock Management
+- [x] Stock In operations
+- [x] Stock Out operations
+- [x] Stock Adjustment transactions
+- [x] Transaction history and audit trail
+- [x] Low stock alerts and notifications
+- [x] Real-time stock level updates
+
+#### Dashboard
+- [x] Total product count
+- [x] Total categories count
+- [x] Total suppliers count
+- [x] Inventory value calculation
+- [x] Recent transactions display
+
+#### Data Export & Reporting
+- [x] Export to Excel
+- [x] Export to PDF
+- [x] Search and filter capabilities
+
+#### Data Management
+- [x] Soft delete across all entities
+- [x] Audit fields on all entities (CreatedBy, CreatedAt, LastModifiedBy, LastModifiedAt)
+- [x] Pagination with configurable page sizes
+- [x] Global search functionality
 
 ---
 
 ## 🚀 Feature Roadmap
 
-### Phase 1: Core Inventory (In Progress)
+### Phase 1: Core Inventory ✅ Completed
 - [x] Authentication & Authorization
 - [x] Role-based access control
 - [x] User management (Admin only)
 - [x] Category CRUD
 - [x] Supplier CRUD
 - [x] Product CRUD
+- [x] Soft delete functionality
+- [x] Audit trail implementation
 
-### Phase 2: Inventory Operations (Planned)
-- [ ] Stock level tracking
-- [ ] Inventory transactions (In/Out)
-- [ ] Low stock alerts
-- [ ] Stock adjustment forms
-- [ ] Batch operations
+### Phase 2: Inventory Operations ✅ Completed
+- [x] Stock level tracking
+- [x] Stock In operations
+- [x] Stock Out operations
+- [x] Stock Adjustment transactions
+- [x] Transaction history
+- [x] Low stock alerts
+- [x] Automatic stock quantity updates after inventory transactions
 
-### Phase 3: Administration (Planned)
-- [ ] Advanced role permissions
+### Phase 3: Data Management & Reporting ✅ Completed
+- [x] Dashboard with inventory overview
+- [x] Export to Excel
+- [x] Export to PDF
+- [x] Advanced search and filtering
+- [x] Pagination
+
+### Phase 4: Additional Enhancements 🔄 Planned
+- [ ] Product image upload
+- [ ] Bulk operations for products/suppliers
 - [ ] Activity/Audit logging
-- [ ] User activity tracking
-- [ ] System settings management
+- [ ] Dashboard charts and graphs
+- [ ] UI/UX improvements
+- [ ] Unit testing (xUnit/NUnit)
+- [ ] Integration testing
+- [ ] Unit of Work pattern
 
-### Phase 4: Analytics & Reporting (Planned)
-- [ ] Dashboard with KPIs
-- [ ] Sales/Inventory reports
-- [ ] Export to Excel/PDF
-- [ ] Real-time analytics
-- [ ] Graphical dashboards
-
-### Phase 5: Engineering Excellence (Planned)
-- [ ] Unit tests (xUnit/NUnit)
-- [ ] Integration tests
-- [ ] CI/CD pipeline (GitHub Actions/Azure Pipelines)
+### Phase 5: API & Advanced Features 🔄 Planned
+- [ ] REST API layer
 - [ ] Swagger/OpenAPI documentation
-- [ ] RESTful API layer
+- [ ] SignalR real-time notifications
 - [ ] Caching layer (Redis)
+- [ ] CI/CD pipeline
 - [ ] Performance optimization
 
 ---
@@ -202,13 +256,17 @@ IMS.ThreeTier/
 │   │   ├── UserManagementController.cs
 │   │   ├── CategoryController.cs
 │   │   ├── SupplierController.cs
-│   │   └── ProductController.cs
+│   │   ├── ProductController.cs
+│   │   ├── StockController.cs
+│   │   └── DashboardController.cs
 │   ├── ViewModels/                    # View-specific models
 │   ├── Views/                         # Razor templates
 │   │   ├── Auth/
 │   │   ├── Category/
 │   │   ├── Supplier/
 │   │   ├── Product/
+│   │   ├── Stock/
+│   │   ├── Dashboard/
 │   │   ├── UserManagement/
 │   │   └── Shared/
 │   ├── Program.cs                     # Dependency injection & middleware
@@ -220,19 +278,27 @@ IMS.ThreeTier/
 │   │   ├── UserManagementService.cs
 │   │   ├── CategoryService.cs
 │   │   ├── SupplierService.cs
-│   │   └── ProductService.cs
+│   │   ├── ProductService.cs
+│   │   ├── StockService.cs
+│   │   └── DashboardService.cs
 │   ├── Interfaces/                    # Service contracts
 │   │   ├── IAuthService.cs
 │   │   ├── IUserManagementService.cs
 │   │   ├── ICategoryService.cs
 │   │   ├── ISupplierService.cs
-│   │   └── IProductService.cs
+│   │   ├── IProductService.cs
+│   │   ├── IStockService.cs
+│   │   └── IDashboardService.cs
 │   └── DTOs/                          # Data transfer objects
 │       ├── LoginDto.cs
 │       ├── CategoryDto.cs
 │       ├── ProductDto.cs
 │       ├── SupplierDto.cs
-│       ├── CreateUserDto.cs
+│       ├── UserCreateDto.cs
+│       ├── StockInDto.cs
+│       ├── StockOutDto.cs
+│       ├── StockAdjustmentDto.cs
+│       ├── StockTransactionDto.cs
 │       └── PagedResult.cs
 │
 ├── IMS.DAL/                           # Data Access Layer
@@ -241,9 +307,17 @@ IMS.ThreeTier/
 │   ├── Repositories/                  # Data access implementations
 │   │   ├── CategoryRepository.cs
 │   │   ├── SupplierRepository.cs
-│   │   └── ProductRepository.cs
+│   │   ├── ProductRepository.cs
+│   │   ├── StockRepository.cs
+│   │   └── DashboardRepository.cs
 │   ├── Interfaces/                    # Repository contracts
+│   │   ├── ICategoryRepository.cs
+│   │   ├── ISupplierRepository.cs
+│   │   ├── IProductRepository.cs
+│   │   ├── IStockRepository.cs
+│   │   └── IDashboardRepository.cs
 │   ├── Migrations/                    # EF Core migrations
+│   │   └── [Migration files]
 │   └── Seeders/                       # Database seeders
 │       ├── IdentitySeeder.cs
 │       └── DataSeeder.cs
@@ -252,7 +326,8 @@ IMS.ThreeTier/
 │   ├── ApplicationUser.cs             # Identity user
 │   ├── Category.cs
 │   ├── Supplier.cs
-│   └── Product.cs
+│   ├── Product.cs
+│   └── StockTransaction.cs
 │
 └── IMS.ThreeTier.sln                  # Solution file
 ```
@@ -291,16 +366,28 @@ Product
 ├── CategoryId (FK) → Category
 ├── SupplierId (FK) → Supplier
 ├── ImagePath
+├── LowStockThreshold
 ├── CreatedAt, CreatedBy
 ├── LastModifiedAt, LastModifiedBy
 ├── IsDeleted (soft delete flag)
 └── Relationships: Category (Many:1), Supplier (Many:1)
+
+StockTransaction
+├── Id (PK)
+├── ProductId (FK) → Product
+├── TransactionType (In/Out/Adjustment)
+├── Quantity
+├── Notes
+├── CreatedAt, CreatedBy
+├── LastModifiedAt, LastModifiedBy
+└── Relationship: Product (Many:1)
 ```
 
 ### Database Constraints
 - **Cascade Protection:** Products cannot be deleted if related Category/Supplier exists (OnDelete: Restrict)
 - **Soft Deletes:** All entities support logical deletion via `IsDeleted` flag
 - **Audit Trail:** All entities track creation and modification metadata
+- **Stock Transactions:** Immutable transaction history for audit compliance
 - **Data Integrity:** Foreign keys enforce referential integrity
 
 ---
@@ -351,10 +438,10 @@ The system uses **ASP.NET Core Identity** with **Cookie-based Authentication**:
 ### Design Patterns Implemented
 
 1. **Three-Tier Architecture:** Clear separation into presentation, business, and data layers
-2. **Repository Pattern:** Data access abstraction with interfaces
-3. **Service Layer Pattern:** Business logic encapsulation
+2. **Repository Pattern:** Data access abstraction with interfaces for testability
+3. **Service Layer Pattern:** Business logic encapsulation and reusability
 4. **Dependency Injection:** Loose coupling via ASP.NET Core's built-in DI container
-5. **DTO Pattern:** Safe data transfer between layers
+5. **DTO Pattern:** Type-safe data transfer between layers
 6. **Fluent API Configuration:** EF Core entity relationships explicitly configured
 
 ### Code Organization
@@ -364,13 +451,26 @@ The system uses **ASP.NET Core Identity** with **Cookie-based Authentication**:
 - **Reusability:** Services can be tested and reused independently
 - **Scalability:** New features can be added with minimal impact on existing code
 
-### Database Best Practices
+### Data Management
 
+- **Soft Deletes:** Logical deletion with audit trail preservation
+- **Audit Fields:** CreatedAt, CreatedBy, LastModifiedAt, LastModifiedBy on all entities
 - **Code-First Approach:** Database schema defined in C# models
 - **Migrations:** Version-controlled database changes
-- **Soft Deletes:** Logical deletion with audit trail preservation
-- **Audit Fields:** CreatedAt, CreatedBy, LastModifiedAt, LastModifiedBy
-- **Constraints:** Foreign keys with appropriate delete behaviors
+
+### Error Handling & Monitoring
+
+- Global Exception Handling Middleware
+- Structured Logging using ASP.NET Core Logging
+- Centralized Error Management
+- Consistent Error Response Handling
+
+### Data Access
+
+- **Repository Pattern:** Abstract data operations from business logic
+- **Foreign Key Constraints:** Enforce referential integrity
+- **Pagination:** Efficient data retrieval for large datasets
+- **Search & Filtering:** Advanced query capabilities
 
 ---
 
@@ -463,47 +563,25 @@ Role:     Admin
 
 ## 🔮 Future Improvements
 
-### Short Term (Next Quarter)
-- [ ] Real-time stock notifications
-- [ ] Inventory adjustment workflows
-- [ ] Email notifications for low stock
-- [ ] Advanced filtering and sorting
-- [ ] Bulk operations for products/suppliers
-- [ ] UI/UX Improvement
+### Planned Enhancements
 
-### Medium Term (Next 2-3 Quarters)
-- [ ] Mobile-friendly responsive design enhancement
-- [ ] REST API layer for external integrations
-- [ ] Comprehensive audit logging system
-- [ ] Import/export functionality (Excel, CSV)
-- [ ] Dashboard with analytics
-- [ ] User activity tracking
+- Product Image Upload
+- Bulk Operations
+- Dashboard Charts & Graphs
+- Activity Logging
+- UI/UX Improvements
+- Optimistic Concurrency Handling (RowVersion)
+- Unit Testing (xUnit)
 
-### Long Term (Beyond 3 Quarters)
-- [ ] Real-time notifications (SignalR)
-- [ ] Advanced reporting engine
-- [ ] Multi-tenant support
-- [ ] Distributed caching (Redis)
+### Long-Term Improvements
 
----
-
-## 📝 Contribution
-
-Contributions are welcome! Please follow these guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Development Guidelines
-
-- Follow C# naming conventions (PascalCase for public members)
-- Write meaningful commit messages
-- Add comments for complex logic
-- Test your changes before submitting PR
-- Update documentation as needed
+- Unit of Work Pattern
+- REST API Layer
+- Swagger/OpenAPI Documentation
+- SignalR Notifications
+- Redis Caching
+- CI/CD Pipeline
+- Performance Optimization
 
 ---
 
@@ -519,15 +597,5 @@ This project is licensed under the **MIT License** - see the LICENSE file for de
 
 ---
 
-## 🎓 Learning Resources
-
-- [ASP.NET Core Documentation](https://learn.microsoft.com/en-us/aspnet/core/)
-- [Entity Framework Core Guide](https://learn.microsoft.com/en-us/ef/core/)
-- [ASP.NET Identity Documentation](https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity)
-- [Repository Pattern](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/infrastructure-persistence-layer-design)
-- [Three-Tier Architecture](https://en.wikipedia.org/wiki/Multitier_architecture)
-
----
-
-**Last Updated:** 2025-05-19  
-**Project Status:** 🟡 Active Development
+**Last Updated:** 2026-06-11  
+**Project Status:** ✅ Core Features Completed | 🔄 Additional Enhancements Planned
